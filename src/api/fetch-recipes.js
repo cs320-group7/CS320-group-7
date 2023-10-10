@@ -22,7 +22,7 @@ export const fetchRecipes = async (query, includeIngredients) => {
 
     let recipes = [];
 
-    json.results.forEach(e => result.push(e.title));
+    json.results.forEach(e => recipes.push(e.title));
 
     return recipes;
 }
