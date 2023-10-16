@@ -11,25 +11,24 @@ datasource db {
 }
 
 model User {
-  id              Int               @id @default(autoincrement())
-  userName        String            @unique
+  id              Int              @id @default(autoincrement())
+  userName        String           @unique
   UserIntolerance UserIntolerance?
   UserDiet        UserDiet?
-  CookBook        CookBook?
+  cookBook        Recipe[]
 }
 
 model Recipe {
-  id         Int       @id @default(autoincrement())
-  title      String
-  CookBook   CookBook? @relation(fields: [cookBookId], references: [id])
-  cookBookId Int?
+  id     Int    @id
+  title  String
+  user   User[]
 }
 
 model UserIntolerance {
-  id            Int         @id @default(autoincrement())
-  user          User        @relation(fields: [userId], references: [id])
-  userId        Int         @unique
-  intolerances  String[]
+  id           Int      @id @default(autoincrement())
+  user         User     @relation(fields: [userId], references: [id])
+  userId       Int      @unique
+  intolerances String[]
 }
 
 model UserDiet {
@@ -37,11 +36,4 @@ model UserDiet {
   user   User     @relation(fields: [userId], references: [id])
   userId Int      @unique
   diets  String[]
-}
-
-model CookBook {
-  id      Int      @id @default(autoincrement())
-  user    User     @relation(fields: [userId], references: [id])
-  userId  Int      @unique
-  recipes Recipe[]
 }
