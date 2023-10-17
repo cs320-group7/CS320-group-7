@@ -17,7 +17,9 @@ interface UpdateUserIntolerances {
   intolerances: string[];
 }
 
-export const updateUserIntolerances = async (user: UpdateUserIntolerances) => {
+export const updateUserIntolerances = async (
+  user: UpdateUserIntolerances,
+): Promise<Object> => {
   const result = await prisma.user.update({
     where: { id: user.id },
     data: {
@@ -37,7 +39,9 @@ interface UpdateUserDiets {
   diets: string[];
 }
 
-export const updateUserDiets = async (user: UpdateUserDiets) => {
+export const updateUserDiets = async (
+  user: UpdateUserDiets,
+): Promise<Object> => {
   const result = await prisma.user.update({
     where: { id: user.id },
     data: {
@@ -58,7 +62,9 @@ interface UpdateUserCookbook {
   title: string;
 }
 
-export const updateUserCookbook = async (user: UpdateUserCookbook) => {
+export const updateUserCookbook = async (
+  user: UpdateUserCookbook,
+): Promise<Object> => {
   const result = await prisma.user.update({
     where: { id: user.id },
     data: {
