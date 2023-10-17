@@ -6,8 +6,7 @@ const prisma = new PrismaClient();
 /*
  * Create new user record.
  */
-// createUser(userName: string) => Promise(obj)
-export const createUser = async (userName) => {
+export const createUser = async (userName: string) => {
   const result = await prisma.user.create({
     data: {
       userName: userName,
@@ -19,8 +18,10 @@ export const createUser = async (userName) => {
 /*
  * Update users intolerances list if exists or create users intolerances list.
  */
-// updateUserIntolerances(id: number, intolerances: string[]) => Promise(obj)
-export const updateUserIntolerances = async (id, intolerances) => {
+export const updateUserIntolerances = async (
+  id: number,
+  intolerances: string[],
+): Promise<Object> => {
   const result = await prisma.user.update({
     where: { id: id },
     data: {
@@ -38,8 +39,10 @@ export const updateUserIntolerances = async (id, intolerances) => {
 /*
  * Update users diets list if exists or create users diets list.
  */
-// updateUserIntolerances(userName: number, diets: string[]) => Promise(obj)
-export const updateUserDiets = async (id, diets) => {
+export const updateUserDiets = async (
+  id: number,
+  diets: string[],
+): Promise<Object> => {
   const result = await prisma.user.update({
     where: { id: id },
     data: {
@@ -57,8 +60,11 @@ export const updateUserDiets = async (id, diets) => {
 /*
  * Either updates users cookbook by connecting to an existing recipe or creating recipe record.
  * */
-// updateUserCookbook(id: number, recipeId: number, title: string) => Promise(obj)
-export const updateUserCookbook = async (id, recipeId, title) => {
+export const updateUserCookbook = async (
+  id: number,
+  recipeId: number,
+  title: string,
+): Promise<Object> => {
   const result = await prisma.user.update({
     where: { id: id },
     data: {
@@ -76,8 +82,7 @@ export const updateUserCookbook = async (id, recipeId, title) => {
 /*
  * Returns all users intolerances.
  */
-// getUserIntolerances(id: number) => Promise{obj}
-export const getUserIntolerances = async (id) => {
+export const getUserIntolerances = async (id: number): Promise<Object> => {
   const result = await prisma.userIntolerance.findUnique({
     where: {
       userId: id,
@@ -92,8 +97,7 @@ export const getUserIntolerances = async (id) => {
 /*
  * Returns all users diets.
  */
-// getUserDiets(id: number) => Promise{obj}
-export const getUserDiets = async (id) => {
+export const getUserDiets = async (id: number): Promise<Object> => {
   const result = await prisma.userDiet.findUnique({
     where: {
       userId: id,
@@ -108,8 +112,7 @@ export const getUserDiets = async (id) => {
 /*
  * Returns users cookbook (saved recipes).
  */
-// getUserDiets(id: number) => Promise{obj}
-export const getUserCookbook = async (id) => {
+export const getUserCookbook = async (id: number): Promise<Object> => {
   const result = await prisma.user
     .findUnique({
       where: { id: id },
