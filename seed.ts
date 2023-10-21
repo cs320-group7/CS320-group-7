@@ -1,5 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { hash } from "bcrypt";
+import { getUserIntolerances } from "./src/db/queries";
 
 const prisma = new PrismaClient();
 
@@ -9,11 +10,23 @@ async function main() {
     where: { email: "test@test.com" },
     update: {},
     create: {
+      id: 1,
       email: "test@test.com",
       name: "Rich",
       password,
+      UserIntolerance: {
+        create: {
+          intolerances: ["Dairy", "Egg", "Gluten"],
+        },
+      },
+      UserDiet: {
+        create: {
+          diets: ["Gluten Free", "Vegan", "Primal"],
+        },
+      },
     },
   });
+
   console.log({ user });
 }
 
