@@ -3,7 +3,11 @@ const { create } = require("domain");
 
 const prisma = new PrismaClient();
 
-// export type UsersIntolereances = Prisma.PromiseReturnType<>;
+export type UsersIntolereances = Prisma.PromiseReturnType<
+  typeof getUserIntolerances
+>;
+
+export type UsersDiets = Prisma.PromiseReturnType<typeof getUserDiets>;
 
 export const findUserByEmail = async (email: string) => {
   const result = prisma.user.findUnique({
@@ -17,7 +21,6 @@ const createUserPersonalData = (
   email: string,
   password: string,
 ) => {
-  ``;
   return Prisma.validator<Prisma.UserCreateInput>()({
     name,
     email,
