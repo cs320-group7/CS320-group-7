@@ -3,7 +3,7 @@ import { assert } from "console";
 import { getRecipeInformation, searchRecipes } from "../src/api/fetch-recipes";
 
 test("searchRecipes follows type specification ", () => {
-  const promise = searchRecipes("pasta", "tomato,cheese");
+  const promise = searchRecipes("pasta", "tomato,cheese", null, null);
 
   assert(typeof promise === "object" && typeof promise.then === "function");
 
@@ -30,7 +30,7 @@ test("getRecipeInformation follows type specification ", () => {
 });
 
 test("searchRecipes fails if !response.ok ", () => {
-  const promise = searchRecipes("", "");
+  const promise = searchRecipes("", "", null, null);
 
   return promise.then(
     (result) => {
