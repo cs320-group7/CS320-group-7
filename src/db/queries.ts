@@ -1,16 +1,40 @@
-const { PrismaClient } = require("@prisma/client");
+import { Prisma, PrismaClient } from "@prisma/client";
 const { create } = require("domain");
 
 const prisma = new PrismaClient();
 
+// export type UsersIntolereances = Prisma.PromiseReturnType<>;
+
+export const findUserByEmail = async (email: string) => {
+  const result = prisma.user.findUnique({
+    where: { email },
+  });
+  return result;
+};
+
+const createUserPersonalData = (
+  name: string,
+  email: string,
+  password: string,
+) => {
+  ``;
+  return Prisma.validator<Prisma.UserCreateInput>()({
+    name,
+    email,
+    password,
+  });
+};
+
 /*
  * Create new user record.
  */
-export const createUser = async (userName: string) => {
+export const createUser = async (
+  name: string,
+  email: string,
+  password: string,
+) => {
   const result = await prisma.user.create({
-    data: {
-      userName: userName,
-    },
+    data: createUserPersonalData(name, email, password),
   });
   return result;
 };
@@ -82,7 +106,7 @@ export const updateUserCookbook = async (
 /*
  * Returns all users intolerances.
  */
-export const getUserIntolerances = async (id: number): Promise<Object> => {
+export const getUserIntolerances = async (id: number) => {
   const result = await prisma.userIntolerance.findUnique({
     where: {
       userId: id,
@@ -97,7 +121,7 @@ export const getUserIntolerances = async (id: number): Promise<Object> => {
 /*
  * Returns all users diets.
  */
-export const getUserDiets = async (id: number): Promise<Object> => {
+export const getUserDiets = async (id: number) => {
   const result = await prisma.userDiet.findUnique({
     where: {
       userId: id,
@@ -112,7 +136,7 @@ export const getUserDiets = async (id: number): Promise<Object> => {
 /*
  * Returns users cookbook (saved recipes).
  */
-export const getUserCookbook = async (id: number): Promise<Object> => {
+export const getUserCookbook = async (id: number) => {
   const result = await prisma.user
     .findUnique({
       where: { id: id },
