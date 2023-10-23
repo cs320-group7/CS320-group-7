@@ -7,6 +7,8 @@ type RecipeData = {
 export const searchRecipes = async (
   query: string,
   includeIngredients: string,
+  diets: { diets: string[] } | null,
+  intolerances: { intolerances: string[] } | null,
 ): Promise<number[]> => {
   const searchUrl = new URL(
     "https://api.spoonacular.com/recipes/complexSearch",
@@ -17,6 +19,17 @@ export const searchRecipes = async (
   searchUrl.searchParams.append("query", query);
 
   searchUrl.searchParams.append("includeIngredients", includeIngredients);
+
+  if (diets) {
+    searchUrl.searchParams.append("diet", diets.diets.join(","));
+  }
+
+  if (intolerances) {
+    searchUrl.searchParams.append(
+      "intolerances",
+      intolerances.intolerances.join(","),
+    );
+  }
 
   let res = await fetch(searchUrl.toString());
 

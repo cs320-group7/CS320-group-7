@@ -1,19 +1,24 @@
 import prisma from "./client";
 
 interface CreateUser {
-  userName: string;
+  email: string;
+  password: string;
+  name: string;
 }
 
 export const createUser = async (user: CreateUser) => {
   return await prisma.user.create({
     data: {
-      userName: user.userName,
+      email: user.email,
+      password: user.password,
+      name: user.name,
     },
   });
 };
 
 interface UpdateUserIntolerances {
   id: number;
+  name: string;
   intolerances: string[];
 }
 
@@ -23,6 +28,7 @@ export const updateUserIntolerances = async (
   const result = await prisma.user.update({
     where: { id: user.id },
     data: {
+      name: user.name,
       UserIntolerance: {
         upsert: {
           create: { intolerances: user.intolerances },

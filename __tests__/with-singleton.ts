@@ -9,21 +9,27 @@ import { prismaMock } from "../singleton";
 test("should create new user ", async () => {
   const user = {
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
   };
 
   prismaMock.user.create.mockResolvedValue(user);
 
   await expect(createUser(user)).resolves.toEqual({
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
   });
 });
 
 test("should update a users intolerances ", async () => {
   const user = {
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
     intolerances: ["Dairy", "Egg", "Gluten"],
   };
 
@@ -31,7 +37,9 @@ test("should update a users intolerances ", async () => {
 
   await expect(updateUserIntolerances(user)).resolves.toEqual({
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
     intolerances: ["Dairy", "Egg", "Gluten"],
   });
 });
@@ -39,7 +47,9 @@ test("should update a users intolerances ", async () => {
 test("should update a users diets ", async () => {
   const user = {
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
     diets: ["Gluten Free", "Vegan", "Primal"],
   };
 
@@ -47,7 +57,9 @@ test("should update a users diets ", async () => {
 
   await expect(updateUserDiets(user)).resolves.toEqual({
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
     diets: ["Gluten Free", "Vegan", "Primal"],
   });
 });
@@ -55,7 +67,9 @@ test("should update a users diets ", async () => {
 test("should update a users cookbook ", async () => {
   const user = {
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
     recipeId: 716429,
     title: "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
   };
@@ -64,7 +78,9 @@ test("should update a users cookbook ", async () => {
 
   await expect(updateUserCookbook(user)).resolves.toEqual({
     id: 1,
-    userName: "Rich",
+    email: "test@test.com",
+    password: "test",
+    name: "Rich",
     recipeId: 716429,
     title: "Pasta with Garlic, Scallions, Cauliflower & Breadcrumbs",
   });

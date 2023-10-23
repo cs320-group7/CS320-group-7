@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  userName        String            @unique
+  UserIntolerance UserIntolerance[]
+  UserDiet        UserDiet[]
+  CookBook        CookBook?
+}
+
+model Intolerance {
+  id              Int               @id @default(autoincrement())
+  intolerance     String
+  UserIntolerance UserIntolerance[]
+}
+
+model Diet {
+  id       Int        @id @default(autoincrement())
+  diet     String
+  UserDiet UserDiet[]
+}
+
+model Recipe {
+  id         Int       @id @default(autoincrement())
+  title      String
+  CookBook   CookBook? @relation(fields: [cookBookId], references: [id])
+  cookBookId Int?
+}
+
+model UserIntolerance {
+  id            Int         @id @default(autoincrement())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        Int
+  intolerance   Intolerance @relation(fields: [intoleranceId], references: [id])
+  intoleranceId Int
+}
+
+model UserDiet {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+  diet   Diet @relation(fields: [dietId], references: [id])
+  dietId Int
+}
+
+model CookBook {
+  id      Int      @id @default(autoincrement())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  Int      @unique
+  recipes Recipe[]
+}
