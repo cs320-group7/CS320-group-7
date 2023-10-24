@@ -3,7 +3,7 @@ const { create } = require("domain");
 
 const prisma = new PrismaClient();
 
-export type UsersIntolereances = Prisma.PromiseReturnType<
+export type UsersIntolerances = Prisma.PromiseReturnType<
   typeof getUserIntolerances
 >;
 

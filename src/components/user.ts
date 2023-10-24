@@ -1,6 +1,6 @@
 import { searchRecipes } from "../api/fetch-recipes";
 import {
-  UsersIntolereances,
+  UsersIntolerances,
   UsersDiets,
   getUserDiets,
   getUserIntolerances,
@@ -14,7 +14,7 @@ class User {
 
     const diets: UsersDiets = await getUserDiets(id);
 
-    const intolerances: UsersIntolereances = await getUserIntolerances(id);
+    const intolerances: UsersIntolerances = await getUserIntolerances(id);
 
     const recipes = await searchRecipes(
       "pasta",
