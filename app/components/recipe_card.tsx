@@ -21,7 +21,7 @@ export function RecipeCard ( props:{title: string, img_src:string, id:number}) {
                 src={props.img_src}
                 width={270}
                 />
-      </CardBody>
+            </CardBody>
         </Card>
     )
 }

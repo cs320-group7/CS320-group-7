@@ -9,7 +9,7 @@ export const searchRecipes = async (
   includeIngredients: string,
   diets: { diets: string[] } | null,
   intolerances: { intolerances: string[] } | null,
-): Promise<number[]> => {
+): Promise<any> => {
   const searchUrl = new URL(
     "https://api.spoonacular.com/recipes/complexSearch",
   );
@@ -36,6 +36,8 @@ export const searchRecipes = async (
   if (!res.ok) {
     throw new Error(res.statusText);
   }
+
+  return res.json()
 
   const recipes = res.json() as Promise<RecipeData>;
 
