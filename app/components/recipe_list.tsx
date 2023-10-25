@@ -9,9 +9,10 @@ export async function RecipeList ( props:{searchedRecipes: Promise<any>} ) {
     let recipes = await props.searchedRecipes
     let recipeCards = []
 
-    for (const {id, title, img_src, ext} of recipes.results) {
-        recipeCards.push(RecipeCard({title, img_src, id}))
+    for (const {id, title, image} of recipes.results) {
+        recipeCards.push(RecipeCard({title: title, img_src: image, id: id}))
     }
 
-    return recipeCards
+    const listItems = recipeCards.map(card => <li key={card.props.id}>{card}</li>)
+    return <ul>{listItems}</ul>;
 }

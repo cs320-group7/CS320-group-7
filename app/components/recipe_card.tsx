@@ -19,7 +19,7 @@ export function RecipeCard ( props:{title: string, img_src:string, id:number}) {
                 alt="Recipe Thumbnail"
                 className="object-cover rounded-xl"
                 src={props.img_src}
-                width={270}
+                width={312}
                 />
             </CardBody>
         </Card>
