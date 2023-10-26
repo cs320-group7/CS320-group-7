@@ -15,6 +15,7 @@ export default async function Page() {
       <LogoutButton />
       <div>Hello World</div> <pre>{JSON.stringify(session)}</pre>
       {/* <div>{JSON.stringify(testQuery)}</div> */}
+      <div>Query: pasta. Ingredients: tomato,cheese</div>
       <RecipeList searchedRecipes={testQuery}/>
       {/* <RecipeCard title="title" img_src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/SMPTE_Color_Bars.svg/1200px-SMPTE_Color_Bars.svg.png" id={5} /> */}
 
