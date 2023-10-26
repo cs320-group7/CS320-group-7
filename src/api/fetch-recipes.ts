@@ -4,6 +4,7 @@ export type RecipeData = {
     title: string;
     image: string;
   }>;
+  totalResults: number
 };
 
 export const searchRecipes = async (
@@ -40,11 +41,11 @@ export const searchRecipes = async (
   }
 
 
-  const recipes = res.json() as Promise<RecipeData>;
+  const recipes = (await res.json()) as RecipeData;
 
+  const recipesFormatted: RecipeData = { results: [], totalResults: recipes.totalResults};
+  recipes.results.forEach((e) => recipesFormatted.results.push({ id: e.id, title: e.title, image: e.image }));
 
-  const recipesFormatted: RecipeData = { results: [] };
-  (await recipes).results.forEach((e) => recipesFormatted.results.push({ id: e.id, title: e.title, image: e.image }));
   return recipesFormatted;
 };
 
