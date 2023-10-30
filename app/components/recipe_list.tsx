@@ -1,7 +1,10 @@
 'use client'
 import React from "react";
-import {Card, CardHeader, CardBody, Image} from "@nextui-org/react";
-import {getRecipeInformation, RecipeData} from "../../src/api/fetch-recipes";
+import { User } from "@prisma/client";
+import { useState } from "react"
+import { getUserDiets, getUserIntolerances } from "@/src/db/queries"; 
+import {Card, CardHeader, CardBody, Image, Button, ButtonGroup} from "@nextui-org/react";
+import {getRecipeInformation, searchRecipes, RecipeData} from "@/src/api/fetch-recipes";
 
 const getRecipeSrc = async (id: number) => {
     let info = await getRecipeInformation(id)
@@ -35,5 +38,6 @@ export async function RecipeList ( props:{searchedRecipes: RecipeData} ) {
     }
 
     const listItems = recipeCards.map(card => <li key={card.props.id}>{card}</li>)
-    return <ul>{listItems}</ul>;
+    return listItems;
 }
+
