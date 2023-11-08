@@ -6,7 +6,7 @@ type RecipeData = {
   }>;
 };
 
-export interface RecipeItem {
+interface RecipeItem {
   id: number;
   title: string;
   image: string;
@@ -49,9 +49,7 @@ export const searchRecipes = async (
 
   const recipeItems: RecipeItem[] = [];
 
-  (await recipes).results.forEach((e) =>
-    recipeItems.push({ id: e.id, title: e.title, image: e.image }),
-  );
+  (await recipes).results.forEach((e) => recipeItems.push({ id: e.id }));
 
   return recipeItems;
 };
