@@ -5,7 +5,7 @@ import { signIn, signOut } from "next-auth/react";
 
 export const LoginButton = () => {
   return (
-    <Button color="primary" onPress={() => signIn()}>
+    <Button color="success" variant="flat" onPress={() => signIn()}>
       Sign in
     </Button>
   );
@@ -13,7 +13,7 @@ export const LoginButton = () => {
 
 export const LogoutButton = () => {
   return (
-    <Button color="primary" onPress={() => signOut()}>
+    <Button color="success" variant="flat" onPress={() => signOut()}>
       Sign out
     </Button>
   );
