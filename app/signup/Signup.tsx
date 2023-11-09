@@ -27,6 +27,12 @@ export const SignUpForm: React.FC = () => {
           </label>
           <input type="password" id="password" className="w-full p-2 border rounded" />
         </div>
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">
+            Name
+          </label>
+          <input type="name" id="name" className="w-full p-2 border rounded" />
+        </div>
         {/* Add more form fields as needed */}
         <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
           Sign Up
