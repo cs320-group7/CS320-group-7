@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { LoginButton, LogoutButton } from "./auth";
-import { FeaturedRecipes } from "./recipes";
 import { redirect } from "next/navigation";
 import { User } from "@prisma/client";
 import DropDown from "./dropdown";
