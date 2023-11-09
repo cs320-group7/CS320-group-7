@@ -9,6 +9,7 @@ import NavBar from "./navbar";
 import { Input } from "@nextui-org/react";
 import HomePage from "./homepage";
 import CreateForm from "./CreateForm";
+import { SignUpForm } from "./signup/Signup";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -20,6 +21,9 @@ export default async function Page() {
 
   return (
     <main className="dark text-foreground bg-background">
+      <div className="flex items-center justify-center min-h-screen">
+      <SignUpForm />
+      </div>
       <NavBar />
       <div className="flex flex-row min-h-screen justify-center items-center">
         <CreateForm />
