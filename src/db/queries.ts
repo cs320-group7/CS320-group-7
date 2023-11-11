@@ -148,3 +148,54 @@ export const getUserCookbook = async (id: number) => {
 
   return result;
 };
+
+
+export const getIngredientList = async (id: number) =>{
+  return await prisma.user.findUnique({
+    where: {id:id},
+  }).ingredientList();
+}
+
+export const addIngredient = async(userId:number, ingredientToAdd:string)=>{
+  return prisma.user.update({
+    where: {id:userId},
+    data:{
+      ingredientList:{
+        connectOrCreate:{
+          where: {id: userId},
+          create: {ingredient: ingredientToAdd}
+        }
+      }
+    }
+  })
+}
+
+export const deleteIngredient = async(userId:number, ingredientToDelete:string) =>{
+  return prisma.user.update({
+    where: {id:userId},
+    data:{
+      ingredientList:{
+        disconnect: {ingredient: ingredientToDelete}
+      }
+    }
+  })
+}
+
+// export const updateUserCookbook = async (
+//   id: number,
+//   recipeId: number,
+//   title: string,
+// ): Promise<Object> => {
+//   const result = await prisma.user.update({
+//     where: { id: id },
+//     data: {
+//       cookBook: {
+//         connectOrCreate: {
+//           where: { id: recipeId },
+//           create: { id: recipeId, title: title },
+//         },
+//       },
+//     },
+//   });
+//   return result;
+// };

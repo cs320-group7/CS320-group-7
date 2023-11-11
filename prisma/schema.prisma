@@ -18,6 +18,14 @@ model User {
   UserIntolerance UserIntolerance?
   UserDiet        UserDiet?
   cookBook        Recipe[]
+  ingredientList  Ingredient[]
+}
+
+
+model Ingredient {
+  id Int @id @default(autoincrement())
+  ingredient String
+  user User[]
 }
 
 model Recipe {
