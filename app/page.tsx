@@ -9,8 +9,7 @@ import NavBar from "./navbar";
 import { Input } from "@nextui-org/react";
 import HomePage from "./homepage";
 import CreateForm from "./CreateForm";
-import { SignUpForm } from "./signup/Signup";
-
+import SignUpForm from "./signup/Signup";
 export default async function Page() {
   const session = await getServerSession(authOptions);
   // <div>Hello World</div> <pre>{JSON.stringify(session)}</pre>

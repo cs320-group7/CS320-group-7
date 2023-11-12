@@ -1,0 +1,16 @@
+import { NextResponse } from "next/server";
+import { hash } from "bcrypt";
+import { createUser } from "@/functions-without-context";
+export async function POST(request:Request){
+    try {
+        const {email, password, name} = await request.json();
+
+        console.log({email, password, name});
+
+        const hashedPassword = await hash(password, 10);
+        createUser({email:email, password:hashedPassword, name:name});
+    } catch (e) {
+        console.log({e});
+    }
+    return NextResponse.json({message:"success"});
+}
