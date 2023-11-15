@@ -2,6 +2,8 @@
 import { NextUIProvider } from "@nextui-org/react";
 import { AppProps } from "next/app";
 import '../styles/globals.css';
+import { useRouter } from "next/router";
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

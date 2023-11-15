@@ -83,3 +83,35 @@ export const getRecipeInformation = async (
 
   return recipe;
 };
+
+export interface IRecipesByIngredients {
+  id: number;
+  title: string;
+  imageType: string;
+  missedIngredientCount: number;
+  missedIngredients: { name: string }[];
+  usedIngredientCount: number;
+  usedIngredients: { name: string }[];
+}
+
+export const searchRecipesByIngredients = async (
+  ingredients: string,
+): Promise<IRecipesByIngredients[]> => {
+  const searchUrl = new URL(
+    `https://api.spoonacular.com/recipes/findByIngredients`,
+  );
+
+  searchUrl.searchParams.append("apiKey", "4c60051133c54a499fb0d966c01e78af");
+
+  searchUrl.searchParams.append("ingredients", ingredients);
+
+  const res = await fetch(searchUrl.toString());
+
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
+
+  const results = res.json() as Promise<IRecipesByIngredients[]>;
+
+  return results;
+};
