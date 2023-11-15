@@ -1,6 +1,5 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { hash } from "bcrypt";
-import { getUserIntolerances } from "./src/db/queries";
 
 const prisma = new PrismaClient();
 
@@ -14,17 +13,25 @@ async function main() {
       email: "test@test.com",
       name: "Rich",
       password,
-      UserIntolerance: {
-        create: {
-          intolerances: ["Dairy", "Egg", "Gluten"],
-        },
-      },
-      UserDiet: {
-        create: {
-          diets: ["Gluten Free", "Vegan", "Primal"],
-        },
-      },
     },
+  });
+
+  // TODO: Delete and create (upsert)
+  const intolerances = await prisma.intolerance.createMany({
+    data: [
+      { name: "Dairy" },
+      { name: "Egg" },
+      { name: "Gluten" },
+      { name: "Grain" },
+      { name: "Peanut" },
+      { name: "Seafood" },
+      { name: "Sesame" },
+      { name: "Shellfish" },
+      { name: "Soy" },
+      { name: "Sulfite" },
+      { name: "Tree Nut" },
+      { name: "Wheat" },
+    ],
   });
 
   console.log({ user });
