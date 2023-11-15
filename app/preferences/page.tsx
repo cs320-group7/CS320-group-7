@@ -1,9 +1,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import { User } from "@prisma/client";
-import { getUserIntolerances, getUserDiets } from "@/src/db/queries";
 import { Checkbox } from "@nextui-org/react";
 import DisplayPreferences from "./display-preferences";
+import { getIntolerances, getUserIntolerances } from "@/src/db/queries";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -12,15 +12,19 @@ export default async function Page() {
 
   const userID: number = +user.id;
 
-  const userIntolerances = (await getUserIntolerances(userID))?.intolerances;
+  const intolerances = await getIntolerances();
 
-  const userDiets = (await getUserDiets(userID))?.diets;
+  const userIntolerances = await getUserIntolerances(userID);
 
-  console.log(userIntolerances);
+  const userIntolerancesNames = userIntolerances?.map((e) => e.id);
+
+  console.log(userIntolerancesNames);
 
   return (
-    <main>
-      <DisplayPreferences data={userIntolerances} />
-    </main>
+    <DisplayPreferences
+      intolerances={intolerances}
+      userIntolerances={userIntolerancesNames}
+      userDiets={[""]}
+    />
   );
 }
