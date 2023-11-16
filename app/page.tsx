@@ -19,7 +19,6 @@ export default async function Page() {
   let userId = -1;
   let userEmail;
   if (session) {
-    console.log((session.user as User).id);
     userId = (session.user as User).id;
     userEmail = await getUserEmail(+userId);
   }
