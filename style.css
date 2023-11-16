@@ -1,0 +1,136 @@
+.frame {
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .frame .macbook-air-wrapper {
+    height: 1000px;
+    width: 2040px;
+  }
+  
+  .frame .macbook-air {
+    background-color: #ffffff;
+    height: 1000px;
+    /* overflow: hidden;
+    position: relative; */
+  }
+  
+  .frame .overlap {
+    background-image: url(/Users/nikhilmukherjee/Group_07_Project_CS320/landing_page_images/healthy-and-vegetarian-food-pattern-in-green-background-vector.jpg);
+    background-position: 50% 50%;
+    background-size: cover;
+    height: 746px;
+    left: 0;
+    position: absolute;
+    top: 85px;
+    width: 1280px;
+  }
+  
+  .frame .logo-transparent-png {
+    height: 490px;
+    left: 200px;
+    object-fit: cover;
+    position: absolute;
+    top: 112px;
+    width: 455px;
+  }
+  
+  .frame .text-wrapper {
+    color: #064f00;
+    font-family: "Inika-Bold", Helvetica;
+    font-size: 35px;
+    font-weight: 700;
+    left: 900px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 160px;
+    width: 627px;
+  }
+  
+  .frame .welcome-to-prep-pal {
+    color: #000000;
+    font-family: "Inika-Bold", Helvetica;
+    font-size: 20px;
+    font-weight: 700;
+    left: 900px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 273px;
+    width: 593px;
+  }
+  
+  .frame .overlap-group {
+    height: 85px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 2040px;
+  }
+  
+  .frame .rectangle {
+    background-color: #22b82285;
+    height: 85px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 2040px;
+  }
+  
+  .frame .icon {
+    height: 39px;
+    left: 1600px;
+    object-fit: cover;
+    position: absolute;
+    top: 17px;
+    width: 38px;
+  }
+  
+  .frame .element {
+    height: 42px;
+    left: 1500px;
+    object-fit: cover;
+    position: absolute;
+    top: 17px;
+    width: 30px;
+  }
+  
+  .frame .div {
+    color: #000000;
+    font-family: "Inika-Bold", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    left: 1087px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 53px;
+    width: 119px;
+  }
+  
+  .frame .text-wrapper-2 {
+    color: #000000;
+    font-family: "Inika-Bold", Helvetica;
+    font-size: 16px;
+    font-weight: 700;
+    left: 1197px;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: 53px;
+    white-space: nowrap;
+    width: 119px;
+  }
+  
+  .frame .logo-transparent-svg {
+    height: 46px;
+    left: 25px;
+    position: absolute;
+    top: 15px;
+    width: 172px;
+  }
+  
