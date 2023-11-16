@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
-import { createUser } from "@/functions-without-context";
+import { createUser } from "@/src/db/queries";
 export async function POST(request:Request){
     try {
         const {email, password, name} = await request.json();

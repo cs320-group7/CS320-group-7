@@ -15,13 +15,14 @@ import {
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
-export default function Nav() {
+export default function Nav({userEmail} :{userEmail: string | undefined | null}) {
   const router = useRouter();
   return (
     <>
       <Navbar>
         <NavbarBrand>
-          <p className={"font-bold text-black"}>PrepPal</p>
+          <Link className={"font-bold text-black"} onPress={ ()=> router.push("/")}>PrepPal </Link>
+          
         </NavbarBrand>
         <NavbarContent justify={"end"}>
           <Dropdown>
@@ -32,7 +33,7 @@ export default function Nav() {
               <DropdownSection title={"Profile"}>
                 <DropdownItem>
                   <p className={"font-semibold text-black"}>Signed in as</p>
-                  <p className={"font-semibold text-black"}>test@test.com</p>
+                  <p className={"font-semibold text-black"}>{userEmail}</p>
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection title={"Actions"}>

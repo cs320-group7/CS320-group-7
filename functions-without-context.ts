@@ -23,8 +23,6 @@ export const createUser = async (userData: CreateUser) => {
   } catch (error) {
     console.error('Error creating user:', error);
   } 
-  return user
-
 };
 
 interface UpdateUserIntolerances {
