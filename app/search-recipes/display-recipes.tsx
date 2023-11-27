@@ -1,7 +1,9 @@
 "use client";
 
-import { RecipeItem, getRecipeInformation } from "@/src/api/fetch-recipes";
+import { RecipeItem, getRecipeInformation, extractRecipebyURL } from "@/src/api/fetch-recipes";
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, } from "@nextui-org/react";
+import { useState } from "react"
 import {
   redirect,
   usePathname,
@@ -9,18 +11,46 @@ import {
   useSearchParams,
 } from "next/navigation";
 
+
+
 export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const handleClick = (id: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set("id", id.toString());
-    const query = params.toString();
+  //for modal
+  const {isOpen, onOpen, onOpenChange} = useDisclosure();
+  const [instructions, setInstructions] = useState("")
+  const [title, setTitle] = useState("")
+  const [url, setURL] = useState("")
 
-    router.push(`/recipe-URL` + "?" + query);
-  };
+
+  // const handleClick = (id: number) => {
+  //   const params = new URLSearchParams(searchParams);
+  //   params.set("id", id.toString());
+  //   const query = params.toString();
+
+  //   router.push(`/recipe-URL` + "?" + query);
+  // };
+
+  const handleClick = async (id: number) => {
+
+    const recipeInfo = await getRecipeInformation(id);
+
+    if (recipeInfo.instructions ==  '') {
+      setInstructions("To view this recipe's instructions, please visit the webpage linked below")
+      // redirect(recipeInfo.sourceUrl);
+    } else {
+      setInstructions(recipeInfo.instructions)
+    }
+    setURL(recipeInfo.sourceUrl)
+    setTitle(recipeInfo.title)
+    onOpen()
+  }
+
+
+
+  
 
   return (
     <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
@@ -49,6 +79,29 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
           </CardFooter>
         </Card>
       ))}
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1 text-default-500">{title}</ModalHeader>
+              <ModalBody>
+                <p className={"text-xs text-default-500"}> 
+                  {instructions}
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" variant="light" onPress={onClose}>
+                  Close
+                </Button>
+                <Button color="primary" onPress={()=>{redirect(url)}}>
+                  Visit Source
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
+    
   );
 }
