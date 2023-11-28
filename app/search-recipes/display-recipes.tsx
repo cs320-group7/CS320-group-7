@@ -37,7 +37,13 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
 
   const handleClick = async (id: number) => {
 
-    const recipeInfo = await getRecipeInformation(id) as any; //hack for quick test
+    const recipeInfo = await getRecipeInformation(id) as any as {
+      id: number,
+      instructions: string,
+      creditsText: string,
+      sourceUrl: string,
+      title: string
+    }; //hack for quick test
     setCred(recipeInfo.creditsText)
 
     if (recipeInfo.instructions ==  '') {
@@ -54,10 +60,6 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
   const openURL = async () => {
     redirect(url) 
   }
-
-
-
-  
 
   return (
     <div className="gap-2 grid grid-cols-2 sm:grid-cols-4">
