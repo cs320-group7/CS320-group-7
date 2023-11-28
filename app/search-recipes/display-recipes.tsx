@@ -5,6 +5,7 @@ import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, } from "@nextui-org/react";
 import { useState } from "react"
 import {
+  RedirectType,
   redirect,
   usePathname,
   useRouter,
@@ -23,6 +24,7 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
   const [instructions, setInstructions] = useState("")
   const [title, setTitle] = useState("")
   const [url, setURL] = useState("")
+  const [cred, setCred] = useState("")
 
 
   // const handleClick = (id: number) => {
@@ -35,7 +37,8 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
 
   const handleClick = async (id: number) => {
 
-    const recipeInfo = await getRecipeInformation(id);
+    const recipeInfo = await getRecipeInformation(id) as any; //hack for quick test
+    setCred(recipeInfo.creditsText)
 
     if (recipeInfo.instructions ==  '') {
       setInstructions("To view this recipe's instructions, please visit the webpage linked below")
@@ -46,6 +49,10 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
     setURL(recipeInfo.sourceUrl)
     setTitle(recipeInfo.title)
     onOpen()
+  }
+
+  const openURL = async () => {
+    redirect(url) 
   }
 
 
@@ -86,14 +93,22 @@ export default function DisplayRecipes({ data }: { data: RecipeItem[] }) {
               <ModalHeader className="flex flex-col gap-1 text-default-500">{title}</ModalHeader>
               <ModalBody>
                 <p className={"text-xs text-default-500"}> 
+                <h1>
+                Instructions:
+                </h1>
+                
                   {instructions}
                 </p>
+                <p className={"text-xs text-default-500"}> 
+                Credit: {cred}
+                </p>
+
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
                 </Button>
-                <Button color="primary" onPress={()=>{redirect(url)}}>
+                <Button color="primary" onPress={() => window.open(url, "_blank", "noreferrer")}>
                   Visit Source
                 </Button>
               </ModalFooter>

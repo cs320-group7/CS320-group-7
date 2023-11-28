@@ -19,7 +19,7 @@ export default async function Page({
 
   const recipes = await searchRecipes(query, includeIngredients, null, null);
 
-  console.log(recipes.length);
+  //console.log(recipes.length);
 
   return (
     <>
