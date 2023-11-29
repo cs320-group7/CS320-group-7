@@ -18,11 +18,7 @@ import {
 import { redirect, useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function CardGroup({
-  results,
-}: {
-  results: IRecipesByIngredients[];
-}) {
+export default function CardGroup({ results }: { results: RecipeItem[] }) {
   const [liked, setLiked] = useState(false);
 
   const [state, setState] = useState(results.map((e) => false));
@@ -126,14 +122,14 @@ export default function CardGroup({
                 <div className={"flex items-start justify-between"}>
                   <div className={"flex flex-col"}>
                     <h1 className={"font-semibold"}>{e.title}</h1>
-                    <p className={"text-xs text-red-500"}>
-                      Missed ingredients: {e.missedIngredientCount} (
-                      {e.missedIngredients.map((e) => e.name).join(", ")})
-                    </p>
-                    <p className={"text-xs text-default-500"}>
-                      Used ingredients: {e.usedIngredientCount} (
-                      {e.usedIngredients.map((e) => e.name).join(", ")})
-                    </p>
+                    {/*<p className={"text-xs text-red-500"}>*/}
+                    {/*  Missed ingredients: {e.missedIngredientCount} (*/}
+                    {/*  {e.missedIngredients.map((e) => e.name).join(", ")})*/}
+                    {/*</p>*/}
+                    {/*<p className={"text-xs text-default-500"}>*/}
+                    {/*  Used ingredients: {e.usedIngredientCount} (*/}
+                    {/*  {e.usedIngredients.map((e) => e.name).join(", ")})*/}
+                    {/*</p>*/}
                   </div>
                   <Button
                     isIconOnly
