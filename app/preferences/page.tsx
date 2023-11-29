@@ -4,9 +4,14 @@ import { User } from "@prisma/client";
 import { Checkbox } from "@nextui-org/react";
 import DisplayPreferences from "./display-preferences";
 import { getIntolerances, getUserIntolerances } from "@/src/db/queries";
+import { redirect, useRouter } from "next/navigation";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect("/");
+  }
 
   const user = session?.user as User;
 

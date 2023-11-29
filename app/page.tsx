@@ -1,39 +1,28 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import { LoginButton, LogoutButton } from "./auth";
-import { redirect } from "next/navigation";
-import { User } from "@prisma/client";
-import DropDown from "./dropdown";
-import NavBar from "./navbar";
-import { Input, Navbar } from "@nextui-org/react";
-import HomePage from "./homepage";
-import CreateForm from "./CreateForm";
 import Nav from "@/app/Nav";
-import In from "@/app/In";
-import { getAllIngredients } from "@/src/db/queries";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { User } from "@prisma/client";
+import { LoginButton, LogoutButton } from "@/app/auth";
+import Nav2 from "@/app/Nav2";
+import { Image } from "@nextui-org/react";
+import Img from "@/app/Img";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
   // <div>Hello World</div> <pre>{JSON.stringify(session)}</pre>
 
-  // if (session) {
-  //   console.log((session.user as User).id);
-  // }
-
-  const ingredients = await getAllIngredients();
-
-  // console.log(ingredients);
-
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav />
-      <In ingredients={ingredients} />
+      {session ? <Nav /> : <Nav2 />}
+
+      <div className={"flex flex-col mt-60 ml-40 gap-5"}>
+        <h1 className={"text-black text-9xl font-medium"}>PrepPal</h1>
+        <p className={"text-black"}>
+          Generate recipes based on ingredients you have at home. Fast and
+          efficient!
+        </p>
+      </div>
+      <Img></Img>
     </div>
-    // <main className="dark text-foreground bg-background">
-    //   <NavBar />
-    //   <div className="flex flex-row min-h-screen justify-center items-center">
-    //     <CreateForm />
-    //   </div>
-    // </main>
   );
 }

@@ -7,6 +7,8 @@ import {
 } from "../functions-without-context";
 import { prismaMock } from "../singleton";
 
+test("createUser should fail if credentials not provided", async () => {});
+
 test("should create new user ", async () => {
   const user = {
     id: 1,
