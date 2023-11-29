@@ -5,9 +5,8 @@ import Nav from "@/app/Nav";
 import In from "@/app/In";
 import { getAllIngredients } from "@/src/db/queries";
 import {getUserEmail} from "@/src/db/queries";
-import Landing from "./landing";
-import LoggedIn from "./loggedin";
-export default async function Page() {
+
+export default async function LoggedIn() {
   const session = await getServerSession(authOptions);
   let userId = -1;
   let userEmail;
@@ -24,7 +23,8 @@ export default async function Page() {
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      {session ? <LoggedIn /> : <Landing />}
+     <Nav userEmail= {userEmail}/>
+     <In ingredients={ingredients} />
     </div>
 
   );
