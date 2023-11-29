@@ -7,7 +7,8 @@ import useSWR from "swr";
 import { Intolerance } from ".prisma/client";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
+import { FailureAlert, SuccessAlert, WarningAlert } from "@/app/alerts";
 
 export default function DisplayPreferences({
   intolerances,
@@ -34,6 +35,12 @@ export default function DisplayPreferences({
 
   const notify = () => toast("wow so easy!");
 
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
+  const [showFailureAlert, setShowFailureAlert] = useState(false);
+
+  const [showWarningAlert, setShowWarningAlert] = useState(false);
+
   const handleChange = async (
     event: ChangeEvent<HTMLInputElement>,
     id: number,
@@ -58,6 +65,21 @@ export default function DisplayPreferences({
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
       <Nav />
+
+      <div className={"max-w-2xl my-auto mx-auto flex flex-col gap-4 my-5"}>
+        {showSuccessAlert && (
+          <SuccessAlert msg={"Successfully updated profile!"} />
+        )}
+        {showFailureAlert && (
+          <FailureAlert msg={"Failed to update profile. Please try again!"} />
+        )}
+        {showWarningAlert && (
+          <WarningAlert
+            msg={"Please wait before submitting another request!"}
+          />
+        )}
+      </div>
+
       <div className={"flex justify-center mt-40 gap-40"}>
         <div>
           <h1 className={"text-xl text-black py-2"}> Intolerances </h1>
@@ -69,6 +91,18 @@ export default function DisplayPreferences({
                   key={e.id}
                   defaultSelected={userIntolerances?.includes(e.id)}
                   onChange={(event) => {
+                    if (showSuccessAlert || showFailureAlert) {
+                      setShowWarningAlert(true);
+                      setTimeout(() => {
+                        setShowWarningAlert(false);
+                      }, 5000);
+                      return;
+                    }
+
+                    if (showWarningAlert) {
+                      return;
+                    }
+
                     fetch(`/api/hello?id=${e.id}&state=${event.target.checked}`)
                       .then((res) => {
                         if (!res.ok) {
@@ -78,10 +112,16 @@ export default function DisplayPreferences({
                         return res;
                       })
                       .then((data) => {
-                        toast.success("Successfully updated profile!");
+                        setShowSuccessAlert(true);
+                        setTimeout(() => {
+                          setShowSuccessAlert(false);
+                        }, 5000);
                       })
                       .catch((err) => {
-                        toast.error("Failed to update profile!");
+                        setShowFailureAlert(true);
+                        setTimeout(() => {
+                          setShowFailureAlert(false);
+                        }, 5000);
                       });
                   }}
                 >

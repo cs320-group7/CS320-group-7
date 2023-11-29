@@ -7,15 +7,24 @@ interface CreateUser {
   name: string;
 }
 
-export const createUser = async (user: CreateUser) => {
-  const result = await prisma.user.create({
-    data: {
-      email: user.email,
-      password: user.password,
-      name: user.name,
-    },
-  });
-  return result;
+export const createUser = async (userData: CreateUser) => {
+  const { email, password, name } = userData;
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password,
+        name,
+      },
+    });
+
+    console.log('User created:', user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+  } 
+  return user
+
 };
 
 interface UpdateUserIntolerances {

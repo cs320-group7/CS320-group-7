@@ -2,21 +2,21 @@ type RecipeData = {
   results: Array<{
     id: number;
     title: string;
-    image: string;
+    imageType: string;
   }>;
 };
 
 export interface RecipeItem {
   id: number;
   title: string;
-  image: string;
+  imageType: string;
 }
 
 export const searchRecipes = async (
   query: string,
   includeIngredients: string,
-  diets: { diets: string[] } | null,
-  intolerances: { intolerances: string[] } | null,
+  diets: string[] | null | undefined,
+  intolerances: string[] | null | undefined,
 ): Promise<RecipeItem[]> => {
   const searchUrl = new URL(
     "https://api.spoonacular.com/recipes/complexSearch",
@@ -29,15 +29,17 @@ export const searchRecipes = async (
   searchUrl.searchParams.append("includeIngredients", includeIngredients);
 
   if (diets) {
-    searchUrl.searchParams.append("diet", diets.diets.join(","));
+    searchUrl.searchParams.append("diet", diets.join(", "));
   }
 
   if (intolerances) {
     searchUrl.searchParams.append(
       "intolerances",
-      intolerances.intolerances.join(","),
+      intolerances.map((e) => e.toLowerCase()).join(", "),
     );
   }
+
+  console.log(searchUrl.toString());
 
   let res = await fetch(searchUrl.toString());
 
@@ -50,7 +52,7 @@ export const searchRecipes = async (
   const recipeItems: RecipeItem[] = [];
 
   (await recipes).results.forEach((e) =>
-    recipeItems.push({ id: e.id, title: e.title, image: e.image }),
+    recipeItems.push({ id: e.id, title: e.title, imageType: e.imageType }),
   );
 
   return recipeItems;
@@ -68,22 +70,25 @@ type RecipeInformation = {
 export const getRecipeInformation = async (
   recipeId: number,
 ): Promise<RecipeInformation> => {
-  const searchUrl = new URL(
-    `https://api.spoonacular.com/recipes/${recipeId}/information`,
-  );
+  try {
+    const searchUrl = new URL(
+      `https://api.spoonacular.com/recipes/${recipeId}/information`,
+    );
 
-  searchUrl.searchParams.append("apiKey", "4c60051133c54a499fb0d966c01e78af");
+    searchUrl.searchParams.append("apiKey", "4c60051133c54a499fb0d966c01e78af");
 
-  let res = await fetch(searchUrl.toString());
+    let res = await fetch(searchUrl.toString());
 
-  if (!res.ok) {
-    throw new Error(res.statusText);
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+
+    const recipe = res.json() as Promise<RecipeInformation>;
+    return recipe;
+  } catch (error: any) {
+    console.error("Error during fetch:", error.message);
+    throw error; // Re-throw the error if needed
   }
-
-  //console.log(await res.json())
-  const recipe = res.json() as Promise<RecipeInformation>;
-
-  return recipe;
 };
 
 export interface IRecipesByIngredients {

@@ -31,6 +31,9 @@ export default function DropDown() {
     router.push(`/recipes` + "?" + query);
   };
 
+
+
+
   return (
     <>
       <Dropdown>
@@ -46,7 +49,7 @@ export default function DropDown() {
           disallowEmptySelection
           selectionMode="multiple"
           selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
+          //onSelectionChange={setSelectedKeys}
         >
           <DropdownItem key="tomato">Tomato</DropdownItem>
           <DropdownItem key="cheese">Cheese</DropdownItem>

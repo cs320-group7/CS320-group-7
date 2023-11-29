@@ -1,6 +1,6 @@
 "use client";
 
-import { react } from "Reaq";
+// import { react } from "React";
 import {
   Autocomplete,
   AutocompleteItem,

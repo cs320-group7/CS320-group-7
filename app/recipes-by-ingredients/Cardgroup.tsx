@@ -15,15 +15,21 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import {
   getRecipeInformation,
   IRecipesByIngredients,
+  RecipeItem,
 } from "@/src/api/fetch-recipes";
 import { redirect, useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function CardGroup({
   results,
 }: {
   results: IRecipesByIngredients[];
 }) {
-  const [liked, setLiked] = useState(false); // I recommend an array of false for # of results. or dict by recipeID.
+
+  const [liked, setLiked] = useState(false); // I recommend an array of false for # of results. or dict by recipeID. (phi
+
+  const [state, setState] = useState(results.map((e) => false));
+
   const router = useRouter();
 
   //for modal
@@ -125,9 +131,20 @@ export default function CardGroup({
   //   },
   // ];
 
+  const handlePress = (e: number) => {
+    setState((prev) =>
+      prev.map((e2, i) => {
+        if (i == e) {
+          return !e2;
+        }
+        return e2;
+      }),
+    );
+  };
+
   return (
     <div className="grid grid-cols-3 p-24 justify-center gap-4">
-      {results.map((e) => {
+      {results.map((e, i) => {
         return (
           <Card key={e.id} className={"w-full"} shadow={"none"} radius={"sm"}>
             <CardBody className={"grid grid-cols-2 gap-4"}>
@@ -155,11 +172,35 @@ export default function CardGroup({
                     className="text-default-900/60 data-[hover]:bg-foreground/10 -translate-y-2 translate-x-2"
                     radius="full"
                     variant="light"
-                    onPress={() => setLiked((v) => !v)}
+                    onPress={() => {
+                      // const searchUrl = new URL("/api/foo");
+                      // searchUrl.searchParams.append("id", e.id.toString());
+                      // searchUrl.searchParams.append("title", e.title);
+                      // searchUrl.searchParams.append("imageType", e.imageType);
+                      fetch(
+                        `/api/foo?id=${e.id}&title=${e.title}&imageType=${e.imageType}`,
+                      )
+                        .then((res) => {
+                          if (!res.ok) {
+                            return Promise.reject(res);
+                          }
+                          // TODO: Fix?
+                          return res;
+                        })
+                        .then((data) => {
+                          toast.success("Successfully updated profile!");
+                        })
+                        .catch((err) => {
+                          toast.error("Failed to update profile!");
+                        });
+                      handlePress(i);
+                    }}
+                    // onPress={() => setLiked((v) => !v)}
                   >
                     <HeartIcon
                       className={liked ? "[&>path]:stroke-transparent" : ""}
-                      fill={liked ? "currentColor" : "none"}
+                      // fill={state[i] ? "currentColor" : "none"}
+                      fill={state[i] ? "currentColor" : "none"}
                     />
                   </Button>
                 </div>

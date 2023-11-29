@@ -2,6 +2,7 @@
 
 import {
   Avatar,
+  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -17,12 +18,39 @@ import { signOut } from "next-auth/react";
 
 export default function Nav() {
   const router = useRouter();
+
   return (
     <>
       <Navbar>
         <NavbarBrand>
-          <p className={"font-bold text-black"}>PrepPal</p>
+          <Link
+            className={"font-bold text-black"}
+            onPress={() => {
+              router.push("/");
+            }}
+          >
+            PrepPal
+          </Link>
         </NavbarBrand>
+
+        <NavbarContent justify={"center"}>
+          <Link
+            className={"text-lime-300"}
+            underline={"hover"}
+            href={"/search-recipes-by-ingredients"}
+          >
+            Ingredients search
+          </Link>
+          <Divider orientation={"vertical"} className={"max-h-5"} />
+          <Link
+            className={"text-lime-300"}
+            color={"success"}
+            underline={"hover"}
+            href={"/complex-search"}
+          >
+            Complex search
+          </Link>
+        </NavbarContent>
         <NavbarContent justify={"end"}>
           <Dropdown>
             <DropdownTrigger>
@@ -36,6 +64,15 @@ export default function Nav() {
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection title={"Actions"}>
+                <DropdownItem
+                  key={"cookbook"}
+                  className={"text-black"}
+                  onPress={() => {
+                    router.push("/cookbook");
+                  }}
+                >
+                  Cookbook
+                </DropdownItem>
                 <DropdownItem
                   key={"preferences"}
                   className={"text-black"}
