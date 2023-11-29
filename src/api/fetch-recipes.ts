@@ -101,6 +101,8 @@ export interface IRecipesByIngredients {
   usedIngredients: { name: string }[];
 }
 
+
+
 export const searchRecipesByIngredients = async (
   ingredients: string,
 ): Promise<IRecipesByIngredients[]> => {

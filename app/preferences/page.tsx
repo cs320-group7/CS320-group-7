@@ -4,7 +4,11 @@ import { User } from "@prisma/client";
 import { Checkbox } from "@nextui-org/react";
 import DisplayPreferences from "./display-preferences";
 import { getIntolerances, getUserIntolerances } from "@/src/db/queries";
+
 import { redirect, useRouter } from "next/navigation";
+
+import { getUserEmail } from "@/src/db/queries";
+
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -23,13 +27,15 @@ export default async function Page() {
 
   const userIntolerancesNames = userIntolerances?.map((e) => e.id);
 
-  console.log(userIntolerancesNames);
+  const userEmail = await getUserEmail(+userID);
+
 
   return (
     <DisplayPreferences
       intolerances={intolerances}
       userIntolerances={userIntolerancesNames}
       userDiets={[""]}
+      userEmail={userEmail}
     />
   );
 }
