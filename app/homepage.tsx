@@ -4,7 +4,7 @@ import { Button, Input } from "@nextui-org/react";
 
 export default function HomePage() {
 
-const onSubmitt(event)
+//const onSubmitt(event)
 
   return (
 

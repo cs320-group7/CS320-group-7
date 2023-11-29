@@ -7,6 +7,7 @@ import Nav2 from "@/app/Nav2";
 import { Image } from "@nextui-org/react";
 import Img from "@/app/Img";
 
+
 export default async function Page() {
   const session = await getServerSession(authOptions);
   // <div>Hello World</div> <pre>{JSON.stringify(session)}</pre>
