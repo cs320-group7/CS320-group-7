@@ -14,10 +14,12 @@ export default function DisplayPreferences({
   intolerances,
   userIntolerances,
   userDiets,
+  userEmail,
 }: {
   intolerances: Intolerance[];
   userIntolerances: number[] | undefined;
   userDiets: string[] | undefined;
+  userEmail: string | undefined | null;
 }) {
   const diets = [
     "Gluten Free",
@@ -64,7 +66,7 @@ export default function DisplayPreferences({
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav />
+      <Nav userEmail = {userEmail}/>
 
       <div className={"max-w-2xl my-auto mx-auto flex flex-col gap-4 my-5"}>
         {showSuccessAlert && (
@@ -79,7 +81,6 @@ export default function DisplayPreferences({
           />
         )}
       </div>
-
       <div className={"flex justify-center mt-40 gap-40"}>
         <div>
           <h1 className={"text-xl text-black py-2"}> Intolerances </h1>

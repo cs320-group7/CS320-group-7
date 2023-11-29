@@ -9,12 +9,59 @@ import prisma from "@/db";
 
 // export type UsersDiets = Prisma.PromiseReturnType<typeof getUserDiets>;
 
+
+interface CreateUser {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export const createUser = async (userData: CreateUser) => {
+  const { email, password, name } = userData;
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password,
+        name,
+      },
+    });
+
+    console.log('User created:', user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+  } 
+};
+
 export const findUserByEmail = async (email: string) => {
   const result = prisma.user.findUnique({
     where: { email },
   });
   return result;
 };
+
+export const getUserEmail = async(userId: number)  =>{
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    if (user) {
+      return user.email;
+    } else {
+      return null; // User not found
+    }
+  } catch (error) {
+    console.error('Error fetching user email:', error);
+    throw error;
+  }
+}
 
 const createUserPersonalData = (
   name: string,
@@ -26,35 +73,6 @@ const createUserPersonalData = (
     email,
     password,
   });
-};
-
-/*
- * Create new user record.
- */
-// export const createUser = async (
-//   name: string,
-//   email: string,
-//   password: string,
-// ) => {
-//   const result = await prisma.user.create({
-//     data: createUserPersonalData(name, email, password),
-//   });
-//   return result;
-// };
-
-export const createUser = async (
-  name: string,
-  email: string,
-  password: string,
-) => {
-  const result = await prisma.user.create({
-    data: {
-      name: name,
-      email: email,
-      password: password,
-    },
-  });
-  return result;
 };
 
 export const getIntolerances = async () => {
