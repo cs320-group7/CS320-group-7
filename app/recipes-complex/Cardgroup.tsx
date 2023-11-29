@@ -10,8 +10,6 @@ import {
 } from "@nextui-org/react";
 import { HeartIcon } from "@/app/recipes-by-ingredients/HeartIcon";
 import { useState } from "react";
-
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, } from "@nextui-org/react";
 import {
   getRecipeInformation,
   IRecipesByIngredients,
@@ -20,46 +18,12 @@ import {
 import { redirect, useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
 
-export default function CardGroup({
-  results,
-}: {
-  results: IRecipesByIngredients[];
-}) {
-
-  const [liked, setLiked] = useState(false); // I recommend an array of false for # of results. or dict by recipeID. (phi
+export default function CardGroup({ results }: { results: RecipeItem[] }) {
+  const [liked, setLiked] = useState(false);
 
   const [state, setState] = useState(results.map((e) => false));
 
   const router = useRouter();
-
-  //for modal
-  const {isOpen, onOpen, onOpenChange} = useDisclosure();
-  const [instructions, setInstructions] = useState("")
-  const [title, setTitle] = useState("")
-  const [url, setURL] = useState("")
-  const [cred, setCred] = useState("")
-
-  const handleClick = async (id: number) => {
-
-    const recipeInfo = await getRecipeInformation(id) as any as {
-      id: number,
-      instructions: string,
-      creditsText: string,
-      sourceUrl: string,
-      title: string
-    }; //hack for quick test
-    setCred(recipeInfo.creditsText)
-
-    if (recipeInfo.instructions ==  '') {
-      setInstructions("To view this recipe's instructions, please visit the webpage linked below")
-      // redirect(recipeInfo.sourceUrl);
-    } else {
-      setInstructions(recipeInfo.instructions)
-    }
-    setURL(recipeInfo.sourceUrl)
-    setTitle(recipeInfo.title)
-    onOpen()
-  }
 
   // const recipes = [
   //   {
@@ -158,14 +122,14 @@ export default function CardGroup({
                 <div className={"flex items-start justify-between"}>
                   <div className={"flex flex-col"}>
                     <h1 className={"font-semibold"}>{e.title}</h1>
-                    <p className={"text-xs text-red-500"}>
-                      Missed ingredients: {e.missedIngredientCount} (
-                      {e.missedIngredients.map((e) => e.name).join(", ")})
-                    </p>
-                    <p className={"text-xs text-default-500"}>
-                      Used ingredients: {e.usedIngredientCount} (
-                      {e.usedIngredients.map((e) => e.name).join(", ")})
-                    </p>
+                    {/*<p className={"text-xs text-red-500"}>*/}
+                    {/*  Missed ingredients: {e.missedIngredientCount} (*/}
+                    {/*  {e.missedIngredients.map((e) => e.name).join(", ")})*/}
+                    {/*</p>*/}
+                    {/*<p className={"text-xs text-default-500"}>*/}
+                    {/*  Used ingredients: {e.usedIngredientCount} (*/}
+                    {/*  {e.usedIngredients.map((e) => e.name).join(", ")})*/}
+                    {/*</p>*/}
                   </div>
                   <Button
                     isIconOnly
@@ -209,47 +173,20 @@ export default function CardGroup({
                   color={"foreground"}
                   showAnchorIcon
                   className={"text-green-800"}
-                  onPress={() => {
-                    handleClick(e.id);
+                  onPress={async () => {
+                    const recipeURL = (await getRecipeInformation(+e.id))
+                      .sourceUrl;
+
+                    router.push(recipeURL);
                   }}
                 >
-                  View Recipe
+                  Go to recipe source url
                 </Link>
               </div>
             </CardBody>
           </Card>
         );
       })}
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1 text-default-500">{title}</ModalHeader>
-              <ModalBody>
-                <p className={"text-xs text-default-500"}> 
-                <h1>
-                Instructions:
-                </h1>
-                
-                  {instructions}
-                </p>
-                <p className={"text-xs text-default-500"}> 
-                Credit: {cred}
-                </p>
-
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={() => window.open(url, "_blank", "noreferrer")}>
-                  Visit Source URL
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
     </div>
   );
 }

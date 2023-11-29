@@ -20,9 +20,10 @@ model User {
 }
 
 model Recipe {
-  id     Int    @id
-  title  String
-  user   User[]
+  id        Int    @id
+  title     String
+  imageType String
+  user      User[]
 }
 
 model Intolerance {

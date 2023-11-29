@@ -1,3 +1,4 @@
+import Nav from "@/app/Nav";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import { User } from "@prisma/client";

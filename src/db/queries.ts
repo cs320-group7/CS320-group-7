@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 const { create } = require("domain");
 
-const prisma = new PrismaClient();
+import prisma from "@/db";
 
 // export type UsersIntolereances = Prisma.PromiseReturnType<
 //   typeof getUserIntolerances
@@ -74,10 +74,6 @@ const createUserPersonalData = (
     password,
   });
 };
-
-/*
- * Create new user record.
- */
 
 export const getIntolerances = async () => {
   const result = await prisma.intolerance.findMany();
@@ -173,19 +169,62 @@ export const getUserIntolerances = async (id: number) => {
 /*
  * Either updates users cookbook by connecting to an existing recipe or creating recipe record.
  * */
-export const updateUserCookbook = async (
+// export const updateUserCookbook = async (
+//   id: number,
+//   recipeId: number,
+//   title: string,
+// ): Promise<Object> => {
+//   const result = await prisma.user.update({
+//     where: { id: id },
+//     data: {
+//       cookBook: {
+//         connectOrCreate: {
+//           where: { id: recipeId },
+//           create: { id: recipeId, title: title },
+//         },
+//       },
+//     },
+//   });
+//   return result;
+// };
+
+export const connectOrCreateCookbook = async (
   id: number,
   recipeId: number,
   title: string,
-): Promise<Object> => {
+  imageType: string,
+) => {
   const result = await prisma.user.update({
     where: { id: id },
     data: {
       cookBook: {
         connectOrCreate: {
           where: { id: recipeId },
-          create: { id: recipeId, title: title },
+          create: { id: recipeId, title: title, imageType: imageType },
         },
+      },
+    },
+  });
+  return result;
+};
+
+export const getUserCookbook = async (id: number) => {
+  const result = await prisma.user
+    .findUnique({
+      where: { id: id },
+    })
+    .cookBook()
+    .catch((err) => console.log(err));
+
+  return result;
+};
+
+export const disconnectCookbook = async (id: number, recipeId: number) => {
+  const result = await prisma.user.update({
+    where: { id: id },
+    data: {
+      cookBook: {
+        disconnect: { id: recipeId },
       },
     },
   });
@@ -225,12 +264,12 @@ export const updateUserCookbook = async (
 /*
  * Returns users cookbook (saved recipes).
  */
-export const getUserCookbook = async (id: number) => {
-  const result = await prisma.user
-    .findUnique({
-      where: { id: id },
-    })
-    .cookBook();
-
-  return result;
-};
+// export const getUserCookbook = async (id: number) => {
+//   const result = await prisma.user
+//     .findUnique({
+//       where: { id: id },
+//     })
+//     .cookBook();
+//
+//   return result;
+// };

@@ -4,6 +4,7 @@ import {
   getRecipeInformation,
   searchRecipes,
   searchRecipesByIngredients,
+  extractRecipebyURL
 } from "../src/api/fetch-recipes";
 
 test("searchRecipes follows type specification ", () => {
@@ -30,6 +31,7 @@ test("getRecipeInformation follows type specification ", () => {
     assert(keys.includes("sourceUrl"));
     assert(keys.includes("image"));
     assert(keys.includes("imageType"));
+    assert(keys.includes("instructions"));
   });
 });
 
@@ -98,4 +100,16 @@ test("searchRecipesByIngredients fails if !response.ok ", () => {
       assert(reason instanceof Error);
     },
   );
+});
+
+test("extractRecipebyURL returns expected output", () => {
+  const promise = extractRecipebyURL(new URL('https://www.foodista.com/recipe/TDS2G6CB/Smoky%2BGrilled%2BCorn%2Bon%2Bthe%2BCob'));
+
+  return promise.then((result) => {
+    assert(typeof result === "object");
+      const keys = Object.keys(result);
+      assert(keys.includes("id"));
+      assert(keys.includes("title"));
+      console.log(result)
+  });
 });
