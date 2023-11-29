@@ -64,6 +64,7 @@ type RecipeInformation = {
   image: string;
   imageType: string;
   sourceUrl: string;
+  instructions: string;
 };
 
 export const getRecipeInformation = async (
@@ -83,7 +84,6 @@ export const getRecipeInformation = async (
     }
 
     const recipe = res.json() as Promise<RecipeInformation>;
-
     return recipe;
   } catch (error: any) {
     console.error("Error during fetch:", error.message);
@@ -122,3 +122,21 @@ export const searchRecipesByIngredients = async (
 
   return results;
 };
+
+export const extractRecipebyURL = async (url: URL): Promise<Response> => {
+  const searchUrl = new URL(
+    `https://api.spoonacular.com/recipes/extract`,
+  );
+
+  searchUrl.searchParams.append("apiKey", "4c60051133c54a499fb0d966c01e78af");
+  searchUrl.searchParams.append("url", url.toString());
+
+  const res = await fetch(searchUrl.toString());
+
+  if (!res.ok) {
+    throw new Error(res.statusText);
+  }
+
+  //print()
+  return res.json()
+}
