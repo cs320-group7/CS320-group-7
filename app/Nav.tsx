@@ -30,7 +30,7 @@ export default function Nav({userEmail} :{userEmail: string | undefined | null})
             }}
           >
             PrepPal
- 
+            </Link>
         </NavbarBrand>
 
         <NavbarContent justify={"center"}>
