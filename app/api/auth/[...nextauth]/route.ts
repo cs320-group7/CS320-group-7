@@ -1,4 +1,4 @@
-import Page from "@/app/page";
+import Page from "@/app/search-recipes-by-ingredients/page";
 import { findUserByEmail } from "@/src/db/queries";
 import { User } from "@prisma/client";
 import { compare } from "bcrypt";

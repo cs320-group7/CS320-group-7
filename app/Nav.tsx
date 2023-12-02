@@ -2,6 +2,7 @@
 
 import {
   Avatar,
+  Divider,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -15,14 +16,41 @@ import {
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 
-export default function Nav() {
+export default function Nav({userEmail} :{userEmail: string | undefined | null}) {
   const router = useRouter();
+
   return (
     <>
       <Navbar>
         <NavbarBrand>
-          <p className={"font-bold text-black"}>PrepPal</p>
+          <Link
+            className={"font-bold text-black"}
+            onPress={() => {
+              router.push("/");
+            }}
+          >
+            PrepPal
+            </Link>
         </NavbarBrand>
+
+        <NavbarContent justify={"center"}>
+          <Link
+            className={"text-lime-300"}
+            underline={"hover"}
+            href={"/search-recipes-by-ingredients"}
+          >
+            Ingredients search
+          </Link>
+          <Divider orientation={"vertical"} className={"max-h-5"} />
+          <Link
+            className={"text-lime-300"}
+            color={"success"}
+            underline={"hover"}
+            href={"/complex-search"}
+          >
+            Complex search
+          </Link>
+        </NavbarContent>
         <NavbarContent justify={"end"}>
           <Dropdown>
             <DropdownTrigger>
@@ -32,10 +60,19 @@ export default function Nav() {
               <DropdownSection title={"Profile"}>
                 <DropdownItem>
                   <p className={"font-semibold text-black"}>Signed in as</p>
-                  <p className={"font-semibold text-black"}>test@test.com</p>
+                  <p className={"font-semibold text-black"}>{userEmail}</p>
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection title={"Actions"}>
+                <DropdownItem
+                  key={"cookbook"}
+                  className={"text-black"}
+                  onPress={() => {
+                    router.push("/cookbook");
+                  }}
+                >
+                  Cookbook
+                </DropdownItem>
                 <DropdownItem
                   key={"preferences"}
                   className={"text-black"}

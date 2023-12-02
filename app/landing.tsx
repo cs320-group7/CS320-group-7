@@ -1,19 +1,20 @@
 "use client";
 
 import React from "react";
-import "/Users/nikhilmukherjee/Group_07_Project_CS320/style.css";
+import "style.css";
 
 import { Image, Button } from "@nextui-org/react";
-import { UserIcon } from "/Users/nikhilmukherjee/Group_07_Project_CS320/app/landing/UserIcon.jsx";
+import { UserIcon } from "./UserIcon.jsx";
 
-import smallLogo from "/Users/nikhilmukherjee/Group_07_Project_CS320/landing_page_images/logo-transparent.png";
-
-export default function Page() {
+import { useRouter } from "next/navigation";
+export default function Landing() {
   return <Frame />;
 }
 
 export const Frame = () => {
+  const router = useRouter();
   return (
+    <div className={"container min-h-screen min-w-full bg-gray-200"}>
     <div className="frame">
       <div className="macbook-air-wrapper">
         <div className="macbook-air">
@@ -47,10 +48,11 @@ export const Frame = () => {
           </div>
           <div className="overlap-group">
             <div className="rectangle" />
-            <Button className="icon" color="primary" endContent={<UserIcon />}>
+            <Button className="icon" color="primary" endContent={<UserIcon />} onPress={ ()=> router.push("/api/auth/signin")}>
               LOG IN
             </Button>
             <Button
+              onPress={ ()=> router.push("/signup")}
               className="element"
               color="primary"
               variant="bordered"
@@ -69,6 +71,7 @@ export const Frame = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 const { create } = require("domain");
 
-const prisma = new PrismaClient();
+import prisma from "@/db";
 
 // export type UsersIntolereances = Prisma.PromiseReturnType<
 //   typeof getUserIntolerances
@@ -9,12 +9,59 @@ const prisma = new PrismaClient();
 
 // export type UsersDiets = Prisma.PromiseReturnType<typeof getUserDiets>;
 
+
+interface CreateUser {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export const createUser = async (userData: CreateUser) => {
+  const { email, password, name } = userData;
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email,
+        password,
+        name,
+      },
+    });
+
+    console.log('User created:', user);
+  } catch (error) {
+    console.error('Error creating user:', error);
+  } 
+};
+
 export const findUserByEmail = async (email: string) => {
   const result = prisma.user.findUnique({
     where: { email },
   });
   return result;
 };
+
+export const getUserEmail = async(userId: number)  =>{
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    if (user) {
+      return user.email;
+    } else {
+      return null; // User not found
+    }
+  } catch (error) {
+    console.error('Error fetching user email:', error);
+    throw error;
+  }
+}
 
 const createUserPersonalData = (
   name: string,
@@ -26,20 +73,6 @@ const createUserPersonalData = (
     email,
     password,
   });
-};
-
-/*
- * Create new user record.
- */
-export const createUser = async (
-  name: string,
-  email: string,
-  password: string,
-) => {
-  const result = await prisma.user.create({
-    data: createUserPersonalData(name, email, password),
-  });
-  return result;
 };
 
 export const getIntolerances = async () => {
@@ -136,19 +169,62 @@ export const getUserIntolerances = async (id: number) => {
 /*
  * Either updates users cookbook by connecting to an existing recipe or creating recipe record.
  * */
-export const updateUserCookbook = async (
+// export const updateUserCookbook = async (
+//   id: number,
+//   recipeId: number,
+//   title: string,
+// ): Promise<Object> => {
+//   const result = await prisma.user.update({
+//     where: { id: id },
+//     data: {
+//       cookBook: {
+//         connectOrCreate: {
+//           where: { id: recipeId },
+//           create: { id: recipeId, title: title },
+//         },
+//       },
+//     },
+//   });
+//   return result;
+// };
+
+export const connectOrCreateCookbook = async (
   id: number,
   recipeId: number,
   title: string,
-): Promise<Object> => {
+  imageType: string,
+) => {
   const result = await prisma.user.update({
     where: { id: id },
     data: {
       cookBook: {
         connectOrCreate: {
           where: { id: recipeId },
-          create: { id: recipeId, title: title },
+          create: { id: recipeId, title: title, imageType: imageType },
         },
+      },
+    },
+  });
+  return result;
+};
+
+export const getUserCookbook = async (id: number) => {
+  const result = await prisma.user
+    .findUnique({
+      where: { id: id },
+    })
+    .cookBook()
+    .catch((err) => console.log(err));
+
+  return result;
+};
+
+export const disconnectCookbook = async (id: number, recipeId: number) => {
+  const result = await prisma.user.update({
+    where: { id: id },
+    data: {
+      cookBook: {
+        disconnect: { id: recipeId },
       },
     },
   });
@@ -188,12 +264,12 @@ export const updateUserCookbook = async (
 /*
  * Returns users cookbook (saved recipes).
  */
-export const getUserCookbook = async (id: number) => {
-  const result = await prisma.user
-    .findUnique({
-      where: { id: id },
-    })
-    .cookBook();
-
-  return result;
-};
+// export const getUserCookbook = async (id: number) => {
+//   const result = await prisma.user
+//     .findUnique({
+//       where: { id: id },
+//     })
+//     .cookBook();
+//
+//   return result;
+// };
