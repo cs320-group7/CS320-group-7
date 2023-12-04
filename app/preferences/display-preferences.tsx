@@ -9,17 +9,33 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChangeEvent, useState } from "react";
 import { FailureAlert, SuccessAlert, WarningAlert } from "@/app/alerts";
+import { Ingredient } from "@prisma/client";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Card,
+  CardBody,
+  Input,
+  Selection,
+} from "@nextui-org/react";
+import { SearchIcon, DeleteIcon } from "@nextui-org/shared-icons";
 
 export default function DisplayPreferences({
   intolerances,
   userIntolerances,
   userDiets,
   userEmail,
+  ingredients,
+  userIngredients
+
 }: {
   intolerances: Intolerance[];
   userIntolerances: number[] | undefined;
   userDiets: string[] | undefined;
   userEmail: string | undefined | null;
+  ingredients: Ingredient[],
+  userIngredients: number[] | undefined
 }) {
   const diets = [
     "Gluten Free",
@@ -42,6 +58,10 @@ export default function DisplayPreferences({
   const [showFailureAlert, setShowFailureAlert] = useState(false);
 
   const [showWarningAlert, setShowWarningAlert] = useState(false);
+
+  const [selectedIngredeients, setSelectedIngredients] = useState<Set<string>>(
+    new Set([]),
+  );
 
   const handleChange = async (
     event: ChangeEvent<HTMLInputElement>,
@@ -146,6 +166,137 @@ export default function DisplayPreferences({
               );
             })}
           </div>
+        </div>
+        <div className = "flex flex-col">
+          <h1 className={"text-xl text-black py-2"}>Pantry</h1>
+            <Autocomplete 
+            placeholder={"Add/paste ingredients"}
+            classNames={{
+              base: "max-w-md",
+              listboxWrapper: "max-h-[320px]",
+              selectorButton: "text-default-500",
+            }}
+            listboxProps={{
+              hideSelectedIcon: true,
+              itemClasses: {
+                base: [
+                  "rounded-medium",
+                  "text-default-500",
+                  "transition-opacity",
+                  "data-[hover=true]:text-foreground",
+                  "dark:data-[hover=true]:bg-default-50",
+                  "data-[pressed=true]:opacity-70",
+                  "data-[hover=true]:bg-default-200",
+                  "data-[selectable=true]:focus:bg-default-100",
+                  "data-[focus-visible=true]:ring-default-500",
+                ],
+              },
+            }}
+            inputProps={{
+              classNames: {
+                input: "ml-1",
+                // inputWrapper: "h-[48px]",
+              },
+            }}
+            popoverProps={{
+              offset: 10,
+              classNames: {
+                base: "rounded-large",
+                content: "p-1 border-small border-default-100 bg-background",
+              },
+            }}
+            aria-label={"Select an ingredient"}
+            startContent={<SearchIcon className={"text-black"} />}
+            radius={"none"}
+            >
+              {ingredients.map((e)=>(
+                <AutocompleteItem key={e.id} textValue={e.name}>
+                  <div className={'flex justify-between items-center'}>
+                    <span className= {"text-small"}></span>
+                    <Button
+                    className="border-small mr-0.5 font-medium shadow-none"
+                    radius="full"
+                    size="sm"
+                    variant="light"
+                    onPress={() => {
+                      //HOW TO ADD TO PASSED IN USER INGREDIENTS LIST
+                      setSelectedIngredients((prev) => {
+                        const newSet = new Set(prev);
+                        newSet.add(e.name);
+                        return newSet;
+                      });
+                    }}
+                    >
+                      Add Ingredient
+                    </Button>
+                  </div>
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
+
+            
+            <div>
+              <Autocomplete
+              placeholder={"Add/paste ingredients"}
+              classNames={{
+                base: "max-w-md",
+                listboxWrapper: "max-h-[320px]",
+                selectorButton: "text-default-500",
+              }}
+              listboxProps={{
+                hideSelectedIcon: true,
+                itemClasses: {
+                  base: [
+                    "rounded-medium",
+                    "text-default-500",
+                    "transition-opacity",
+                    "data-[hover=true]:text-foreground",
+                    "dark:data-[hover=true]:bg-default-50",
+                    "data-[pressed=true]:opacity-70",
+                    "data-[hover=true]:bg-default-200",
+                    "data-[selectable=true]:focus:bg-default-100",
+                    "data-[focus-visible=true]:ring-default-500",
+                  ],
+                },
+              }}
+              inputProps={{
+                classNames: {
+                  input: "ml-1",
+                  // inputWrapper: "h-[48px]",
+                },
+              }}
+              popoverProps={{
+                offset: 10,
+                classNames: {
+                  base: "rounded-large",
+                  content: "p-1 border-small border-default-100 bg-background",
+                },
+              }}
+              aria-label={"Select an ingredient"}
+              startContent={<DeleteIcon className={"text-black"} />}
+              radius={"none"}
+              >
+                {ingredients.filter((e)=>userIngredients?.includes(e.id)).map((e)=>(
+                <AutocompleteItem key={e.id} textValue={e.name}>
+                  <div className={'flex justify-between items-center'}>
+                    <span className= {"text-small"}></span>
+                    <Button
+                    className="border-small mr-0.5 font-medium shadow-none"
+                    radius="full"
+                    size="sm"
+                    variant="light"
+                    onPress={() => {
+                      //DELETE INGREDIENTS
+                      
+                    }}
+                    >
+                      Add Ingredient
+                    </Button>
+                  </div>
+                </AutocompleteItem>
+              ))}
+              </Autocomplete>
+            </div>
         </div>
       </div>
     </div>
