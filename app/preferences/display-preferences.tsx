@@ -212,7 +212,7 @@ export default function DisplayPreferences({
               {ingredients.map((e)=>(
                 <AutocompleteItem key={e.id} textValue={e.name}>
                   <div className={'flex justify-between items-center'}>
-                    <span className= {"text-small"}></span>
+                    <span className= {"text-small"}>{e.name}</span>
                     <Button
                     className="border-small mr-0.5 font-medium shadow-none"
                     radius="full"
@@ -220,11 +220,8 @@ export default function DisplayPreferences({
                     variant="light"
                     onPress={() => {
                       //HOW TO ADD TO PASSED IN USER INGREDIENTS LIST
-                      setSelectedIngredients((prev) => {
-                        const newSet = new Set(prev);
-                        newSet.add(e.name);
-                        return newSet;
-                      });
+                      setSelectedIngredients(prevIngredients => new Set(prevIngredients).add(e.name));
+                      userIngredients?.push(e.id)
                     }}
                     >
                       Add Ingredient
@@ -276,10 +273,10 @@ export default function DisplayPreferences({
               startContent={<DeleteIcon className={"text-black"} />}
               radius={"none"}
               >
-                {ingredients.filter((e)=>userIngredients?.includes(e.id)).map((e)=>(
-                <AutocompleteItem key={e.id} textValue={e.name}>
+                {Array.from(selectedIngredeients).map((e)=>(
+                <AutocompleteItem key={e} textValue={e}>
                   <div className={'flex justify-between items-center'}>
-                    <span className= {"text-small"}></span>
+                    <span className= {"text-small"}>{e}</span>
                     <Button
                     className="border-small mr-0.5 font-medium shadow-none"
                     radius="full"
@@ -287,10 +284,14 @@ export default function DisplayPreferences({
                     variant="light"
                     onPress={() => {
                       //DELETE INGREDIENTS
-                      
+                      setSelectedIngredients(prevIngredients => {
+                        const newIngredients = new Set(prevIngredients);
+                        newIngredients.delete(e);
+                        return newIngredients;
+                      });
                     }}
                     >
-                      Add Ingredient
+                      Remove Ingredient
                     </Button>
                   </div>
                 </AutocompleteItem>
