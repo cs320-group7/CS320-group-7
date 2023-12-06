@@ -54,7 +54,7 @@ export default function Nav({userEmail} :{userEmail: string | undefined | null})
             </Button>
           </Tooltip>
           
-          <Divider orientation={"vertical"} className={"max-h-5"} />
+          <Divider orientation={"vertical"} className={"max-h-5"} style={{backgroundColor: 'black'}} />
           {/* <Link
             className={" text-celadon"}
             color={"success"}
