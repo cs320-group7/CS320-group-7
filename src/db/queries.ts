@@ -16,9 +16,7 @@ interface CreateUser {
   name: string;
 }
 
-export const createUser = async (userData: CreateUser) => {
-  const { email, password, name } = userData;
-
+export const createUser = async (name: string, email: string, password: string) => {
   try {
     const user = await prisma.user.create({
       data: {
@@ -27,8 +25,8 @@ export const createUser = async (userData: CreateUser) => {
         name,
       },
     });
-
     console.log('User created:', user);
+    return user
   } catch (error) {
     console.error('Error creating user:', error);
   } 

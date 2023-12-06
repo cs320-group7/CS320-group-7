@@ -7,7 +7,6 @@ import In from "@/app/complex-search/In";
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
-  // <div>Hello World</div> <pre>{JSON.stringify(session)}</pre>
 
   if (session) {
     console.log((session.user as User).id);
@@ -19,7 +18,9 @@ export default async function Page() {
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav />
+      
+    {/* <div>Hello World</div> <pre>{JSON.stringify(session)}</pre> */}
+      <Nav userEmail={session?.user?.email}/>
       <In ingredients={ingredients} />
     </div>
   );

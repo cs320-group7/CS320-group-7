@@ -1,8 +1,6 @@
 import React from "react";
 export const HeartIcon = ({
   size = 24,
-  widtht,
-  height,
   strokeWidth = 1.5,
   fill = "none",
   ...props
@@ -11,10 +9,10 @@ export const HeartIcon = ({
     aria-hidden="true"
     fill={fill}
     focusable="false"
-    height={size || height}
+    height={size}
     role="presentation"
     viewBox="0 0 24 24"
-    width={size || width}
+    width={size}
     {...props}
   >
     <path

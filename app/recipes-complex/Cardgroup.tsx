@@ -8,7 +8,7 @@ import {
   Image,
   Link,
 } from "@nextui-org/react";
-import { HeartIcon } from "@/app/recipes-by-ingredients/HeartIcon";
+import { HeartIcon } from "@/app/HeartIcon";
 import { useState } from "react";
 import {
   getRecipeInformation,

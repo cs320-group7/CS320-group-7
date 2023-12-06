@@ -19,7 +19,7 @@ export default async function Page({
   const user = session?.user as User;
 
   const userID: number = +user.id;
-
+  const userEmail: string = user.email
   const ingredientsSearch = searchParams?.ingredients ?? "";
   const querySearch = searchParams?.query ?? "";
   const isIntolerancesSearch = searchParams?.isIntolerances ?? "";
@@ -68,7 +68,7 @@ export default async function Page({
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
       {/*<pre className={"text-black"}> {JSON.stringify(ingredientsSearch)}</pre>*/}
-      <Nav />
+      <Nav userEmail={userEmail}/>
       <CardGroup results={results} />
     </div>
   );

@@ -68,7 +68,7 @@ export default function DisplayPreferences({
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
       <Nav userEmail = {userEmail}/>
 
-      <div className={"max-w-2xl my-auto mx-auto flex flex-col gap-4 my-5"}>
+      <div className={"max-w-2xl my-auto mx-auto flex flex-col gap-4"}>
         {showSuccessAlert && (
           <SuccessAlert msg={"Successfully updated profile!"} />
         )}
