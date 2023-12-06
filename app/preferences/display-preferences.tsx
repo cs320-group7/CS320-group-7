@@ -18,9 +18,10 @@ import {
   CardBody,
   Input,
   Selection,
+  Divider
 } from "@nextui-org/react";
 import { SearchIcon, DeleteIcon } from "@nextui-org/shared-icons";
-import { GET } from '../api/ingredients/routeIngredient'
+
 
 
 export default function DisplayPreferences({
@@ -108,12 +109,14 @@ export default function DisplayPreferences({
       </div>
       <div className={"flex justify-center mt-40 gap-40"}>
         <div>
-          <h1 className={"text-xl text-black py-2"}> Intolerances </h1>
+          <h1 className={"text-xl text-black py-2"}> Intolerances: {userIntolerances?.length} </h1>
           <div className={"grid grid-cols-1 gap-2"}>
             {" "}
             {intolerances.map((e) => {
               return (
-                <Checkbox
+                <>
+                  <Divider orientation="horizontal" ></Divider>
+                  <Checkbox
                   key={e.id}
                   defaultSelected={userIntolerances?.includes(e.id)}
                   onChange={(event) => {
@@ -154,26 +157,34 @@ export default function DisplayPreferences({
                   <ToastContainer />
                   {e.name}
                 </Checkbox>
+                
+                </>
+                
               );
             })}
           </div>
         </div>
         <div>
-          <h1 className={"text-xl text-black py-2"}> Diets </h1>
+          <h1 className={"text-xl text-black py-2"}> Diets: {diets.length} </h1>
           <div className={"grid grid-cols-1 gap-2"}>
             {" "}
             {diets.map((e) => {
               return (
-                <Checkbox key={e} defaultSelected={userDiets?.includes(e)}>
+                <>
+                  <Divider orientation="horizontal"></Divider>
+                  <Checkbox key={e} defaultSelected={userDiets?.includes(e)}>
                   {" "}
                   {e}{" "}
-                </Checkbox>
+                  </Checkbox>
+                
+                </>
+                
               );
             })}
           </div>
         </div>
         <div className = "flex flex-col">
-          <h1 className={"text-xl text-black py-2"}>Pantry</h1>
+          <h1 className={"text-xl text-black py-2"}>Pantry: {selectedIngredeients.size}</h1>
             <Autocomplete 
             placeholder={"Add/paste ingredients"}
             classNames={{
