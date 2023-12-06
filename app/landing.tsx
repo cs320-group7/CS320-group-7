@@ -5,8 +5,8 @@ import "style.css";
 
 import { Image, Button } from "@nextui-org/react";
 import { UserIcon } from "./UserIcon.jsx";
-
 import { useRouter } from "next/navigation";
+
 export default function Landing() {
   return <Frame />;
 }
@@ -14,7 +14,7 @@ export default function Landing() {
 export const Frame = () => {
   const router = useRouter();
   return (
-    <div className={"container min-h-screen min-w-full bg-gray-200"}>
+    <div className={"container min-h-screen min-w-full flex"}>
     <div className="frame">
       <div className="macbook-air-wrapper">
         <div className="macbook-air">

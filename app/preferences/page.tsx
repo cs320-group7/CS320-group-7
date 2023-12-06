@@ -31,9 +31,9 @@ export default async function Page() {
   const userEmail = await getUserEmail(+userID);
 
 
-  const userId: number = +user.id
+  
   const ingredients = await getAllIngredients()
-  const userIngredients = await getIngredientList(userId)
+  const userIngredients = await getIngredientList(userID)
   const userIngredientsIds = userIngredients?.map((e)=>e.id)
 
 
@@ -45,6 +45,7 @@ export default async function Page() {
       userEmail={userEmail}
       ingredients={ingredients}
       userIngredients={userIngredientsIds}
+      userID={userID}
     />
   );
 }

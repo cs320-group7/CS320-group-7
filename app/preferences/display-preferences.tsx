@@ -20,6 +20,8 @@ import {
   Selection,
 } from "@nextui-org/react";
 import { SearchIcon, DeleteIcon } from "@nextui-org/shared-icons";
+import { addIngredient, deleteIngredient } from "@/src/db/queries";
+
 
 export default function DisplayPreferences({
   intolerances,
@@ -27,7 +29,8 @@ export default function DisplayPreferences({
   userDiets,
   userEmail,
   ingredients,
-  userIngredients
+  userIngredients,
+  userID
 
 }: {
   intolerances: Intolerance[];
@@ -35,7 +38,9 @@ export default function DisplayPreferences({
   userDiets: string[] | undefined;
   userEmail: string | undefined | null;
   ingredients: Ingredient[],
-  userIngredients: number[] | undefined
+  userIngredients: number[] | undefined,
+  userID: number 
+
 }) {
   const diets = [
     "Gluten Free",
@@ -88,7 +93,7 @@ export default function DisplayPreferences({
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
       <Nav userEmail = {userEmail}/>
 
-      <div className={"max-w-2xl my-auto mx-auto flex flex-col gap-4 my-5"}>
+      <div className={"max-w-2xl mx-auto flex flex-col gap-4 my-5"}>
         {showSuccessAlert && (
           <SuccessAlert msg={"Successfully updated profile!"} />
         )}
@@ -218,10 +223,30 @@ export default function DisplayPreferences({
                     radius="full"
                     size="sm"
                     variant="light"
-                    onPress={() => {
+                    onPress={(event) => {
                       //HOW TO ADD TO PASSED IN USER INGREDIENTS LIST
                       setSelectedIngredients(prevIngredients => new Set(prevIngredients).add(e.name));
                       userIngredients?.push(e.id)
+                      fetch(`/api/ingredients?id=${e.id}&state=${true}`)
+                      .then((res)=>{
+                        if(!res.ok){
+                          return Promise.reject(res)
+                        }
+                        return res
+                      })
+                      // .then((data) => {
+                      //   setShowSuccessAlert(true);
+                      //   setTimeout(() => {
+                      //     setShowSuccessAlert(false);
+                      //   }, 5000);
+                      // })
+                      .catch((err) => {
+                        console.log(err)
+                        setShowFailureAlert(true);
+                        setTimeout(() => {
+                          setShowFailureAlert(false);
+                        }, 5000);
+                      });
                     }}
                     >
                       Add Ingredient
