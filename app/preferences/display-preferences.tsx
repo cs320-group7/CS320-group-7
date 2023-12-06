@@ -20,7 +20,7 @@ import {
   Selection,
 } from "@nextui-org/react";
 import { SearchIcon, DeleteIcon } from "@nextui-org/shared-icons";
-import { addIngredient, deleteIngredient } from "@/src/db/queries";
+import { GET } from '../api/ingredients/routeIngredient'
 
 
 export default function DisplayPreferences({
@@ -64,7 +64,7 @@ export default function DisplayPreferences({
 
   const [showWarningAlert, setShowWarningAlert] = useState(false);
 
-  const [selectedIngredeients, setSelectedIngredients] = useState<Set<string>>(
+  const [selectedIngredeients, setSelectedIngredients] = useState<Set<Ingredient>>(
     new Set([]),
   );
 
@@ -225,21 +225,23 @@ export default function DisplayPreferences({
                     variant="light"
                     onPress={(event) => {
                       //HOW TO ADD TO PASSED IN USER INGREDIENTS LIST
-                      setSelectedIngredients(prevIngredients => new Set(prevIngredients).add(e.name));
+                      setSelectedIngredients(prevIngredients => new Set(prevIngredients).add(e));
                       userIngredients?.push(e.id)
-                      fetch(`/api/ingredients?id=${e.id}&state=${true}`)
+                      let url=`/api/ingredients?id=${e.id}&state=${true}`
+                      let req = new Request(url)
+                      fetch(req)
                       .then((res)=>{
                         if(!res.ok){
                           return Promise.reject(res)
                         }
                         return res
                       })
-                      // .then((data) => {
-                      //   setShowSuccessAlert(true);
-                      //   setTimeout(() => {
-                      //     setShowSuccessAlert(false);
-                      //   }, 5000);
-                      // })
+                      .then((data) => {
+                        setShowSuccessAlert(true);
+                        setTimeout(() => {
+                          setShowSuccessAlert(false);
+                        }, 5000);
+                      })
                       .catch((err) => {
                         console.log(err)
                         setShowFailureAlert(true);
@@ -299,9 +301,9 @@ export default function DisplayPreferences({
               radius={"none"}
               >
                 {Array.from(selectedIngredeients).map((e)=>(
-                <AutocompleteItem key={e} textValue={e}>
+                <AutocompleteItem key={e.id} textValue={e.name}>
                   <div className={'flex justify-between items-center'}>
-                    <span className= {"text-small"}>{e}</span>
+                    <span className= {"text-small"}>{e.name}</span>
                     <Button
                     className="border-small mr-0.5 font-medium shadow-none"
                     radius="full"
@@ -313,6 +315,28 @@ export default function DisplayPreferences({
                         const newIngredients = new Set(prevIngredients);
                         newIngredients.delete(e);
                         return newIngredients;
+                      });
+                      let url=`/api/ingredients?id=${e.id}&state=${false}`
+                      let req = new Request(url)
+                      fetch(req)
+                      .then((res)=>{
+                        if(!res.ok){
+                          return Promise.reject(res)
+                        }
+                        return res
+                      })
+                      .then((data) => {
+                        setShowSuccessAlert(true);
+                        setTimeout(() => {
+                          setShowSuccessAlert(false);
+                        }, 5000);
+                      })
+                      .catch((err) => {
+                        console.log(err)
+                        setShowFailureAlert(true);
+                        setTimeout(() => {
+                          setShowFailureAlert(false);
+                        }, 5000);
                       });
                     }}
                     >
