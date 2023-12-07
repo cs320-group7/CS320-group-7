@@ -3,7 +3,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import { User } from "@prisma/client";
 import Nav from "@/app/Nav";
 import In from "@/app/In";
-import { getAllIngredients } from "@/src/db/queries";
+//import { getAllIngredients } from "@/src/db/queries";
 import {getUserEmail} from "@/src/db/queries";
 
 export default async function LoggedIn() {
@@ -18,14 +18,15 @@ export default async function LoggedIn() {
 
   }
  
-  const ingredients = await getAllIngredients();
+  //const ingredients = await getAllIngredients();
   
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
      <Nav userEmail= {userEmail}/>
-     <In ingredients={ingredients} />
+     
     </div>
 
   );
 }
+//<In ingredients={ingredients} />
