@@ -3,7 +3,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import { User } from "@prisma/client";
 import Nav from "@/app/Nav";
 import In from "@/app/In";
-//import { getAllIngredients } from "@/src/db/queries";
+import { getAllIngredients } from "@/src/db/queries";
 import {getUserEmail} from "@/src/db/queries";
 
 export default async function LoggedIn() {
