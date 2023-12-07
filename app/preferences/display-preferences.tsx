@@ -9,17 +9,39 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChangeEvent, useState } from "react";
 import { FailureAlert, SuccessAlert, WarningAlert } from "@/app/alerts";
+import { Ingredient } from "@prisma/client";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Card,
+  CardBody,
+  Input,
+  Selection,
+  Divider
+} from "@nextui-org/react";
+import { SearchIcon, DeleteIcon } from "@nextui-org/shared-icons";
+
+
 
 export default function DisplayPreferences({
   intolerances,
   userIntolerances,
   userDiets,
   userEmail,
+  ingredients,
+  userIngredients,
+  userID
+
 }: {
   intolerances: Intolerance[];
   userIntolerances: number[] | undefined;
   userDiets: string[] | undefined;
   userEmail: string | undefined | null;
+  ingredients: Ingredient[],
+  userIngredients: number[] | undefined,
+  userID: number 
+
 }) {
   const diets = [
     "Gluten Free",
@@ -42,6 +64,10 @@ export default function DisplayPreferences({
   const [showFailureAlert, setShowFailureAlert] = useState(false);
 
   const [showWarningAlert, setShowWarningAlert] = useState(false);
+
+  const [selectedIngredeients, setSelectedIngredients] = useState<Set<Ingredient>>(
+    new Set([]),
+  );
 
   const handleChange = async (
     event: ChangeEvent<HTMLInputElement>,
@@ -68,7 +94,7 @@ export default function DisplayPreferences({
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
       <Nav userEmail = {userEmail}/>
 
-      <div className={"max-w-2xl my-auto mx-auto flex flex-col gap-4 my-5"}>
+      <div className={"max-w-2xl mx-auto flex flex-col gap-4 my-5"}>
         {showSuccessAlert && (
           <SuccessAlert msg={"Successfully updated profile!"} />
         )}
@@ -83,12 +109,14 @@ export default function DisplayPreferences({
       </div>
       <div className={"flex justify-center mt-40 gap-40"}>
         <div>
-          <h1 className={"text-xl text-black py-2"}> Intolerances </h1>
+          <h1 className={"text-xl text-black py-2"}> Intolerances: {userIntolerances?.length} </h1>
           <div className={"grid grid-cols-1 gap-2"}>
             {" "}
             {intolerances.map((e) => {
               return (
-                <Checkbox
+                <>
+                  <Divider orientation="horizontal" ></Divider>
+                  <Checkbox
                   key={e.id}
                   defaultSelected={userIntolerances?.includes(e.id)}
                   onChange={(event) => {
@@ -129,23 +157,207 @@ export default function DisplayPreferences({
                   <ToastContainer />
                   {e.name}
                 </Checkbox>
+                
+                </>
+                
               );
             })}
           </div>
         </div>
         <div>
-          <h1 className={"text-xl text-black py-2"}> Diets </h1>
+          <h1 className={"text-xl text-black py-2"}> Diets: {diets.length} </h1>
           <div className={"grid grid-cols-1 gap-2"}>
             {" "}
             {diets.map((e) => {
               return (
-                <Checkbox key={e} defaultSelected={userDiets?.includes(e)}>
+                <>
+                  <Divider orientation="horizontal"></Divider>
+                  <Checkbox key={e} defaultSelected={userDiets?.includes(e)}>
                   {" "}
                   {e}{" "}
-                </Checkbox>
+                  </Checkbox>
+                
+                </>
+                
               );
             })}
           </div>
+        </div>
+        <div className = "flex flex-col">
+          <h1 className={"text-xl text-black py-2"}>Pantry: {selectedIngredeients.size}</h1>
+            <Autocomplete 
+            placeholder={"Add/paste ingredients"}
+            classNames={{
+              base: "max-w-md",
+              listboxWrapper: "max-h-[320px]",
+              selectorButton: "text-default-500",
+            }}
+            listboxProps={{
+              hideSelectedIcon: true,
+              itemClasses: {
+                base: [
+                  "rounded-medium",
+                  "text-default-500",
+                  "transition-opacity",
+                  "data-[hover=true]:text-foreground",
+                  "dark:data-[hover=true]:bg-default-50",
+                  "data-[pressed=true]:opacity-70",
+                  "data-[hover=true]:bg-default-200",
+                  "data-[selectable=true]:focus:bg-default-100",
+                  "data-[focus-visible=true]:ring-default-500",
+                ],
+              },
+            }}
+            inputProps={{
+              classNames: {
+                input: "ml-1",
+                // inputWrapper: "h-[48px]",
+              },
+            }}
+            popoverProps={{
+              offset: 10,
+              classNames: {
+                base: "rounded-large",
+                content: "p-1 border-small border-default-100 bg-background",
+              },
+            }}
+            aria-label={"Select an ingredient"}
+            startContent={<SearchIcon className={"text-black"} />}
+            radius={"none"}
+            >
+              {ingredients.map((e)=>(
+                <AutocompleteItem key={e.id} textValue={e.name}>
+                  <div className={'flex justify-between items-center'}>
+                    <span className= {"text-small"}>{e.name}</span>
+                    <Button
+                    className="border-small mr-0.5 font-medium shadow-none"
+                    radius="full"
+                    size="sm"
+                    variant="light"
+                    onPress={(event) => {
+                      //HOW TO ADD TO PASSED IN USER INGREDIENTS LIST
+                      setSelectedIngredients(prevIngredients => new Set(prevIngredients).add(e));
+                      userIngredients?.push(e.id)
+                      let url=`/api/ingredients?id=${e.id}&state=${true}`
+                      let req = new Request(url)
+                      fetch(req)
+                      .then((res)=>{
+                        if(!res.ok){
+                          return Promise.reject(res)
+                        }
+                        return res
+                      })
+                      .then((data) => {
+                        setShowSuccessAlert(true);
+                        setTimeout(() => {
+                          setShowSuccessAlert(false);
+                        }, 5000);
+                      })
+                      .catch((err) => {
+                        console.log(err)
+                        setShowFailureAlert(true);
+                        setTimeout(() => {
+                          setShowFailureAlert(false);
+                        }, 5000);
+                      });
+                    }}
+                    >
+                      Add Ingredient
+                    </Button>
+                  </div>
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
+
+            
+            <div>
+              <Autocomplete
+              placeholder={"Add/paste ingredients"}
+              classNames={{
+                base: "max-w-md",
+                listboxWrapper: "max-h-[320px]",
+                selectorButton: "text-default-500",
+              }}
+              listboxProps={{
+                hideSelectedIcon: true,
+                itemClasses: {
+                  base: [
+                    "rounded-medium",
+                    "text-default-500",
+                    "transition-opacity",
+                    "data-[hover=true]:text-foreground",
+                    "dark:data-[hover=true]:bg-default-50",
+                    "data-[pressed=true]:opacity-70",
+                    "data-[hover=true]:bg-default-200",
+                    "data-[selectable=true]:focus:bg-default-100",
+                    "data-[focus-visible=true]:ring-default-500",
+                  ],
+                },
+              }}
+              inputProps={{
+                classNames: {
+                  input: "ml-1",
+                  // inputWrapper: "h-[48px]",
+                },
+              }}
+              popoverProps={{
+                offset: 10,
+                classNames: {
+                  base: "rounded-large",
+                  content: "p-1 border-small border-default-100 bg-background",
+                },
+              }}
+              aria-label={"Select an ingredient"}
+              startContent={<DeleteIcon className={"text-black"} />}
+              radius={"none"}
+              >
+                {Array.from(selectedIngredeients).map((e)=>(
+                <AutocompleteItem key={e.id} textValue={e.name}>
+                  <div className={'flex justify-between items-center'}>
+                    <span className= {"text-small"}>{e.name}</span>
+                    <Button
+                    className="border-small mr-0.5 font-medium shadow-none"
+                    radius="full"
+                    size="sm"
+                    variant="light"
+                    onPress={() => {
+                      //DELETE INGREDIENTS
+                      setSelectedIngredients(prevIngredients => {
+                        const newIngredients = new Set(prevIngredients);
+                        newIngredients.delete(e);
+                        return newIngredients;
+                      });
+                      let url=`/api/ingredients?id=${e.id}&state=${false}`
+                      let req = new Request(url)
+                      fetch(req)
+                      .then((res)=>{
+                        if(!res.ok){
+                          return Promise.reject(res)
+                        }
+                        return res
+                      })
+                      .then((data) => {
+                        setShowSuccessAlert(true);
+                        setTimeout(() => {
+                          setShowSuccessAlert(false);
+                        }, 5000);
+                      })
+                      .catch((err) => {
+                        console.log(err)
+                        setShowFailureAlert(true);
+                        setTimeout(() => {
+                          setShowFailureAlert(false);
+                        }, 5000);
+                      });
+                    }}
+                    >
+                      Remove Ingredient
+                    </Button>
+                  </div>
+                </AutocompleteItem>
+              ))}
+              </Autocomplete>
+            </div>
         </div>
       </div>
     </div>
