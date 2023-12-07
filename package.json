@@ -12,7 +12,7 @@
     "lint": "next lint",
     "test": "jest",
     "cypress:open": "cypress open",
-    "postinstall": "prisma generate && prisma migrate deploy"
+    "postinstall": "prisma generate && prisma migrate reset"
   },
   "dependencies": {
     "@nextui-org/react": "^2.1.13",
