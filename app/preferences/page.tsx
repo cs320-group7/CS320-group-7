@@ -9,6 +9,7 @@ import { getIngredientList, getAllIngredients } from "@/src/db/queries";
 import { redirect, useRouter } from "next/navigation";
 
 import { getUserEmail } from "@/src/db/queries";
+import Nav from "../Nav";
 
 
 export default async function Page() {
@@ -28,7 +29,7 @@ export default async function Page() {
 
   const userIntolerancesNames = userIntolerances?.map((e) => e.id);
 
-  const userEmail = await getUserEmail(+userID);
+  const userEmail = user.email
 
 
   
@@ -38,7 +39,9 @@ export default async function Page() {
 
 
   return (
-    <DisplayPreferences
+    <div className={"container min-h-screen min-w-full bg-gray-200"}>
+      <Nav userEmail={userEmail}/>
+      <DisplayPreferences
       intolerances={intolerances}
       userIntolerances={userIntolerancesNames}
       userDiets={[""]}
@@ -47,5 +50,8 @@ export default async function Page() {
       userIngredients={userIngredientsIds}
       userID={userID}
     />
+      
+    </div>
+    
   );
 }

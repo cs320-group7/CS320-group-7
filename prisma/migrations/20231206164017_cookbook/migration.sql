@@ -1,21 +1,21 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
 
-  - You are about to drop the `UserDiet` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `UserIntolerance` table. If the table is not empty, all the data it contains will be lost.
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
-*/
--- DropForeignKey
-ALTER TABLE "UserDiet" DROP CONSTRAINT "UserDiet_userId_fkey";
+-- CreateTable
+CREATE TABLE "Recipe" (
+    "id" INTEGER NOT NULL,
+    "title" TEXT NOT NULL,
+    "imageType" TEXT NOT NULL,
 
--- DropForeignKey
-ALTER TABLE "UserIntolerance" DROP CONSTRAINT "UserIntolerance_userId_fkey";
-
--- DropTable
-DROP TABLE "UserDiet";
-
--- DropTable
-DROP TABLE "UserIntolerance";
+    CONSTRAINT "Recipe_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Intolerance" (
@@ -32,10 +32,19 @@ CREATE TABLE "Ingredient" (
 );
 
 -- CreateTable
+CREATE TABLE "_RecipeToUser" (
+    "A" INTEGER NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "_IntoleranceToUser" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Intolerance_name_key" ON "Intolerance"("name");
@@ -44,10 +53,22 @@ CREATE UNIQUE INDEX "Intolerance_name_key" ON "Intolerance"("name");
 CREATE UNIQUE INDEX "Ingredient_id_key" ON "Ingredient"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "_RecipeToUser_AB_unique" ON "_RecipeToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_RecipeToUser_B_index" ON "_RecipeToUser"("B");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "_IntoleranceToUser_AB_unique" ON "_IntoleranceToUser"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_IntoleranceToUser_B_index" ON "_IntoleranceToUser"("B");
+
+-- AddForeignKey
+ALTER TABLE "_RecipeToUser" ADD CONSTRAINT "_RecipeToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Recipe"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_RecipeToUser" ADD CONSTRAINT "_RecipeToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_IntoleranceToUser" ADD CONSTRAINT "_IntoleranceToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Intolerance"("id") ON DELETE CASCADE ON UPDATE CASCADE;
