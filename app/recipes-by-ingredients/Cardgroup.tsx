@@ -8,7 +8,7 @@ import {
   Image,
   Link,
 } from "@nextui-org/react";
-import { HeartIcon } from "@/app/recipes-by-ingredients/HeartIcon";
+import { HeartIcon } from "@/app/HeartIcon";
 import { useState } from "react";
 
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, } from "@nextui-org/react";
@@ -199,7 +199,7 @@ export default function CardGroup({
                   >
                     <HeartIcon
                       className={liked ? "[&>path]:stroke-transparent" : ""}
-                      // fill={state[i] ? "currentColor" : "none"}
+                      size={24}
                       fill={state[i] ? "currentColor" : "none"}
                     />
                   </Button>

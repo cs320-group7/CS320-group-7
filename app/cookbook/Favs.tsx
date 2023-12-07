@@ -2,7 +2,7 @@
 import { Recipe } from ".prisma/client";
 import { Button, Card, CardBody, Image, Link } from "@nextui-org/react";
 import { toast } from "react-toastify";
-import { HeartIcon } from "@/app/recipes-by-ingredients/HeartIcon";
+import { HeartIcon } from "@/app/HeartIcon";
 import { getRecipeInformation } from "@/src/api/fetch-recipes";
 import { useState } from "react";
 

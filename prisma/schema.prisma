@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -17,6 +18,7 @@ model User {
   name            String?
   cookBook        Recipe[]
   intolerances    Intolerance[]
+  ingredientList  Ingredient[]
 }
 
 model Recipe {
@@ -34,5 +36,6 @@ model Intolerance {
 
 model Ingredient {
   name String
-  id   Int    @unique
+  id   Int   @id @unique @default(autoincrement())
+  user User[]
 }
