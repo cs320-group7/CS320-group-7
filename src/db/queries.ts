@@ -121,6 +121,35 @@ export const getUserIntolerances = async (id: number) => {
     .intolerances();
   return result;
 };
+export const getIngredientList = async (id: number) =>{
+  return await prisma.user.findUnique({
+    where: {id:id},
+  }).ingredientList();
+}
+
+export const addIngredient = async(userId:number, ingredientToAdd:number)=>{
+  return await prisma.user.update({
+    where: {id: userId},
+    data: {
+      ingredientList: {
+        connect: {id:ingredientToAdd}
+      }
+    }
+  })
+}
+
+
+export const deleteIngredient = async(userId:number, ingredientToDelete:number) =>{
+  return prisma.user.update({
+    where: {id:userId},
+    data:{
+      ingredientList:{
+        disconnect: {id:ingredientToDelete}
+      }
+    }
+  })
+}
+
 
 /*
  * Update users intolerances list if exists or create users intolerances list.

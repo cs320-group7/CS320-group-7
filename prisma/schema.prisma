@@ -12,12 +12,13 @@ datasource db {
 }
 
 model User {
-  id           Int           @id @default(autoincrement())
-  email        String        @unique
-  password     String
-  name         String?
-  cookBook     Recipe[]
-  intolerances Intolerance[]
+  id              Int              @id @default(autoincrement())
+  email           String           @unique
+  password        String
+  name            String?
+  cookBook        Recipe[]
+  intolerances    Intolerance[]
+  ingredientList  Ingredient[]
 }
 
 model Recipe {
@@ -35,5 +36,6 @@ model Intolerance {
 
 model Ingredient {
   name String
-  id   Int    @unique
+  id   Int   @id @unique @default(autoincrement())
+  user User[]
 }

@@ -5,8 +5,9 @@ import "style.css";
 
 import { Image, Button } from "@nextui-org/react";
 import { UserIcon } from "./UserIcon.jsx";
-
 import { useRouter } from "next/navigation";
+import { Divider } from "@nextui-org/react";
+
 export default function Landing() {
   return <Frame />;
 }
@@ -18,7 +19,7 @@ export const Frame = () => {
     <div className="frame w-full">
       <div className="macbook-air-wrapper">
         <div className="macbook-air">
-          <div className="overlap">
+          <div className="overlap min-w-full min-h-full">
             <Image
               className="logo-transparent-png"
               src="landing_page_images/logo-transparent-png.png"
@@ -46,20 +47,17 @@ export const Frame = () => {
               personalized kitchen assistant for future meals.
             </p>
           </div>
-          <div className="overlap-group">
+          <div className="overlap-group min-w-full" style={{backgroundColor:' #014421'}}>
             <div className="rectangle" />
-            <Button className="icon" color="primary" endContent={<UserIcon />} onPress={ ()=> router.push("/api/auth/signin")}>
-              LOG IN
+            <Button className="element"  style={{color:'#013220', backgroundColor: '#66D6A2'}}  onPress={ ()=> router.push("/signup")}>
+              Register
             </Button>
-            <Button
-              onPress={ ()=> router.push("/signup")}
-              className="element"
-              color="primary"
-              variant="bordered"
-              startContent={<UserIcon />}
-            >
-              SIGN UP
+            
+            <Button className="icon"  style={{color:'#013220', backgroundColor: '#66D6A2'}}  onPress={ ()=> router.push("/api/auth/signin")}>
+              Log In
             </Button>
+            
+            
 
             <Image
               className="logo-transparent-svg"

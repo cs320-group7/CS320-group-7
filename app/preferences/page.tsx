@@ -4,6 +4,7 @@ import { User } from "@prisma/client";
 import { Checkbox } from "@nextui-org/react";
 import DisplayPreferences from "./display-preferences";
 import { getIntolerances, getUserIntolerances } from "@/src/db/queries";
+import { getIngredientList, getAllIngredients } from "@/src/db/queries";
 
 import { redirect, useRouter } from "next/navigation";
 
@@ -31,6 +32,12 @@ export default async function Page() {
   const userEmail = user.email
 
 
+  
+  const ingredients = await getAllIngredients()
+  const userIngredients = await getIngredientList(userID)
+  const userIngredientsIds = userIngredients?.map((e)=>e.id)
+
+
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
       <Nav userEmail={userEmail}/>
@@ -39,6 +46,9 @@ export default async function Page() {
       userIntolerances={userIntolerancesNames}
       userDiets={[""]}
       userEmail={userEmail}
+      ingredients={ingredients}
+      userIngredients={userIngredientsIds}
+      userID={userID}
     />
       
     </div>
