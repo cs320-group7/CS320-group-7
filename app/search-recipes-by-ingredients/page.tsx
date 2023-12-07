@@ -4,7 +4,6 @@ import { LoginButton, LogoutButton } from "../auth";
 import { redirect } from "next/navigation";
 import { User } from "@prisma/client";
 import DropDown from "../dropdown";
-import NavBar from "../navbar";
 import { Input, Navbar } from "@nextui-org/react";
 import HomePage from "../homepage";
 import CreateForm from "../CreateForm";
@@ -26,7 +25,7 @@ export default async function Page() {
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav />
+      <Nav userEmail={session?.user?.email}/>
       <In ingredients={ingredients} />
     </div>
     // <main className="dark text-foreground bg-background">

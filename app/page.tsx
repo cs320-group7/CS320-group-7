@@ -24,7 +24,7 @@ export default async function Page() {
   
 
   return (
-    <div className={"min-h-screen min-w-full bg-black"}>
+    <div className={" bg-gray-200"}>
       {session ? <LoggedIn /> : <Landing />}
     </div>
 

@@ -15,8 +15,8 @@ export default function Landing() {
 export const Frame = () => {
   const router = useRouter();
   return (
-    <div className={"container min-h-screen min-w-full flex"}>
-    <div className="frame ">
+    <div className={"flex min-h-screen min-w-full bg-gray-200"}>
+    <div className="frame w-full">
       <div className="macbook-air-wrapper">
         <div className="macbook-air">
           <div className="overlap min-w-full min-h-full">

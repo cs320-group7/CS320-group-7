@@ -8,7 +8,7 @@ export async function POST(request:Request){
         console.log({email, password, name});
 
         const hashedPassword = await hash(password, 10);
-        createUser({email:email, password:hashedPassword, name:name});
+        createUser(email, hashedPassword, name);
     } catch (e) {
         console.log({e});
     }

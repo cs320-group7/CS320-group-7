@@ -16,7 +16,7 @@ export default async function Page() {
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav />
+      <Nav userEmail={user?.email}/>
       <Favs results={userCookbook}></Favs>
     </div>
   );

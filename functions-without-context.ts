@@ -75,6 +75,7 @@ interface UpdateUserCookbook {
   id: number;
   recipeId: number;
   title: string;
+  imageType: string,
 }
 
 export const updateUserCookbook = async (
@@ -86,7 +87,7 @@ export const updateUserCookbook = async (
       cookBook: {
         connectOrCreate: {
           where: { id: user.recipeId },
-          create: { id: user.recipeId, title: user.title },
+          create: { id: user.recipeId, title: user.title, imageType: user.imageType },
         },
       },
     },
