@@ -8,7 +8,6 @@ import { redirect, useRouter } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { User } from "@prisma/client";
-import { hash } from "bcrypt";
 
 
 export default async function EditProfile() {
