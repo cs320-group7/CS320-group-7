@@ -106,6 +106,15 @@ export default function Nav({userEmail} :{userEmail: string | undefined | null})
                 </DropdownItem>
                 
                 <DropdownItem
+                  key={"edit-profile"}
+                  className={"text-black"}
+                  onPress={() => {
+                    router.push("/edit-profile");
+                  }}
+                >
+                  Edit Profile
+                </DropdownItem>
+                <DropdownItem
                   key={"logout"}
                   description="Log out of your profile"
                   className={"text-danger"}

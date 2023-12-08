@@ -20,7 +20,7 @@ export default async function Page() {
 
   }
  
-  const ingredients = await getAllIngredients();
+ const ingredients = await getAllIngredients();
   
 
   return (
