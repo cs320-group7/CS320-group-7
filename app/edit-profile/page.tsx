@@ -5,22 +5,16 @@
 import { Input, Button } from "@nextui-org/react";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { User } from "@prisma/client";
+import {  getSession, useSession } from "next-auth/react";
 
 
 export default async function EditProfile() {
   const router = useRouter();
 
-  const session = await getServerSession(authOptions);
+  const session = await getSession()
 
-  if (!session) {
-    redirect('/')
-    return
-  }
-
-  const user = session.user as User
+  const user = session!.user as User
 
   const [existingName, setExistingName] = useState(user.name ? user.name : "");
   const [newName, setNewName] = useState("");
@@ -28,8 +22,13 @@ export default async function EditProfile() {
   const [existingPassword, setExistingPassword] = useState("****");
   const [newPassword, setNewPassword] = useState("");
 
-  const [existingEmail, setExistingEmail] = useState("test@test.com");
+  const [existingEmail, setExistingEmail] = useState(user.email ? user.name : "");
   const [newEmail, setNewEmail] = useState("");
+
+  if (!session) {
+    redirect('/')
+    return
+  }
 
   const handlePUT = async (name?:string,email?:string,password?:string) => {
 
