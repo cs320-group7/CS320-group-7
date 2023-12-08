@@ -32,6 +32,54 @@ export const createUser = async (name: string, email: string, password: string) 
   } 
 };
 
+export const updateUserEmail = async (id:number, email:string) => {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        email: email,
+      },
+    });
+    return user
+  } catch (error) {
+    console.error('Error creating user:', error);
+  } 
+};
+
+export const updateUserName = async (id:number, name:string) => {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id:id,
+      },
+      data: {
+        name:name,
+      },
+    });
+    return user
+  } catch (error) {
+    console.error('Error updating user:', error);
+  } 
+};
+
+export const updateUserPassword = async (id:number, password:string) => {
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id:id,
+      },
+      data: {
+        password:password,
+      },
+    });
+    return user
+  } catch (error) {
+    console.error('Error updating user:', error);
+  } 
+};
+
 export const findUserByEmail = async (email: string) => {
   const result = prisma.user.findUnique({
     where: { email },
@@ -52,6 +100,25 @@ export const getUserEmail = async(userId: number)  =>{
 
     if (user) {
       return user.email;
+    } else {
+      return null; // User not found
+    }
+  } catch (error) {
+    console.error('Error fetching user email:', error);
+    throw error;
+  }
+}
+
+export const getUser = async(userId: number)  =>{
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (user) {
+      return user
     } else {
       return null; // User not found
     }

@@ -4,15 +4,26 @@
 // Import necessary components and hooks
 import { Input, Button } from "@nextui-org/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { getUserEmail } from "@/src/db/queries";
+import { User } from "@prisma/client";
+import { hash } from "bcrypt";
 
-export default function EditProfile() {
+
+export default async function EditProfile() {
   const router = useRouter();
 
-  const [existingName, setExistingName] = useState("Rich");
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect('/')
+    return
+  }
+
+  const user = session.user as User
+
+  const [existingName, setExistingName] = useState(user.name ? user.name : "");
   const [newName, setNewName] = useState("");
 
   const [existingPassword, setExistingPassword] = useState("****");
@@ -21,20 +32,53 @@ export default function EditProfile() {
   const [existingEmail, setExistingEmail] = useState("test@test.com");
   const [newEmail, setNewEmail] = useState("");
 
-  const handleNameChange = () => {
-    console.log("Changing name to:", newName);
+  const handlePUT = async (name?:string,email?:string,password?:string) => {
+
+    // Handle form submission logic here
+    const respons = await fetch('/api/auth/register', {
+      method: 'PUT',
+      body: JSON.stringify({
+        name,
+        email,
+        password
+      }),
+    });
+    console.log({respons});
   };
 
-  const handlePasswordChange = () => {
+  const handleNameChange = () => {
+    console.log("Changing name to:", newName);
+    try{
+      handlePUT(newName)
+      //updateUserName(user.id, newName)
+    } catch (e) {
+      console.log("error:", e)
+    }
+  };
+
+  const handlePasswordChange = async () => {
     console.log("Changing password to:", newPassword);
+    try{
+      //updateUserPassword(user.id, newPassword)
+      // TODO: I feel like password gets hashed here, but let's see
+      handlePUT(undefined, undefined, newPassword)
+    } catch (e) {
+      console.log("error:", e)
+    }
   };
 
   const handleEmailChange = () => {
     console.log("Changing email to:", newEmail);
+    try{
+      handlePUT(undefined, newEmail, undefined)
+      //updateUserEmail(user.id, newEmail)
+    } catch (e) {
+      console.log("error:", e)
+    }
   };
 
   const handleGoBack = () => {
-    router.push("http://localhost:3000");
+    redirect("/")
   };
   
 
@@ -43,22 +87,25 @@ export default function EditProfile() {
       <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
 
       <div className="mb-4">
-        <p className="font-bold">Existing Name: {existingName}</p>
+        <p className="font-bold">Name:</p>
         <Input
+          label="name"
+          required={true}
           value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          placeholder="Enter new name"
+          onValueChange={setNewName}
+          placeholder={existingName}
           size="sm"
         />
         <Button onClick={handleNameChange}>Change Name</Button>
       </div>
 
       <div className="mb-4">
-        <p className="font-bold">Existing Email: {existingEmail}</p>
+        <p className="font-bold">email</p>
         <Input
-          type="email"
+          label="email"
+          required={true}
           value={newEmail}
-          onChange={(e) => setNewEmail(e.target.value)}
+          onValueChange={setNewEmail}
           placeholder="Enter new email"
           size="sm"
         />
@@ -66,15 +113,15 @@ export default function EditProfile() {
       </div>
 
       <div className="mb-4">
-        <p className="font-bold">Existing Email: {existingEmail}</p>
+        <p className="font-bold">Password:</p>
         <Input
-          type="email"
-          value={newEmail}
-          onChange={(e) => setNewEmail(e.target.value)}
-          placeholder="Enter new email"
+          type="password"
+          value={newPassword}
+          onValueChange={setNewPassword}
+          placeholder="Enter new password"
           size="sm"
         />
-        <Button onClick={handleEmailChange}>Change Email</Button>
+        <Button onClick={handlePasswordChange}>Change Password</Button>
       </div>
 
       <button onClick={handleGoBack} className="text-blue-500 underline">

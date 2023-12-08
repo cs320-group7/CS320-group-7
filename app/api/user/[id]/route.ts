@@ -1,7 +1,6 @@
 // Import necessary dependencies
 import { type NextRequest, NextResponse } from 'next/server';
-import { updateUser} from '@/services/userService';
-import { getUserByID, updateUserName, updateUserEmail, updateUserPassword } from '@/src/db/queries';
+import { getUser, updateUserName, updateUserEmail, updateUserPassword } from '@/src/db/queries';
 import { hash } from 'bcrypt';
 
 export async function GET(req: NextRequest) {
@@ -9,7 +8,7 @@ export async function GET(req: NextRequest) {
   const id = Number(searchParams.get('id'));
 
   try {
-    const user = await getUserByID(id) as {
+    const user = await getUser(id) as {
       id: number;
       email: string;
       password: string;
@@ -31,18 +30,34 @@ export async function PUT(req: NextRequest) {
   try {
     // Update user name if provided
     if (name) {
+      try {
       await updateUserName(Number(id), name);
+      }
+      catch (e) {
+        console.error("not good")
+      }
     }
 
     // Update user email if provided
     if (email) {
+      try{
       await updateUserEmail(Number(id), email);
+      }
+      catch (e) {
+        console.error("not good")
+      }
     }
 
     // Update user password if provided
     if (password) {
-      const hashed = await hash(password, 10);
-      await updateUserPassword(Number(id), hashed);
+      const hashed = await hash(password, 12);
+      try {
+        await updateUserPassword(Number(id), hashed);
+      }
+      catch (e) {
+        console.error("not good")
+      }
+
     }
 
     return NextResponse.json({ body: null, status: 200, message: 'User updated successfully' });

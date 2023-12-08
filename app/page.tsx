@@ -19,13 +19,13 @@ export default async function Page() {
   else{
 
   }
- 
- const ingredients = await getAllIngredients();
-  
 
+  const ingredients = await getAllIngredients();
+  
   return (
     <div className={" bg-gray-200"}>
       {session ? <LoggedIn /> : <Landing />}
+      
     </div>
 
   );
