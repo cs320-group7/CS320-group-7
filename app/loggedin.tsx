@@ -18,12 +18,13 @@ export default async function LoggedIn() {
 
   }
  
-  //const ingredients = await getAllIngredients();
+  const ingredients = await getAllIngredients();
   
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
      <Nav userEmail= {userEmail}/>
+     <In ingredients={ingredients}/>
      
     </div>
 
