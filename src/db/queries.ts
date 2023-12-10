@@ -150,6 +150,71 @@ export const deleteIngredient = async(userId:number, ingredientToDelete:number) 
   })
 }
 
+
+/*
+ * Update users intolerances list if exists or create users intolerances list.
+ */
+// export const updateUserIntolerances = async (
+//   id: number,
+//   intolerances: string[],
+// ): Promise<Object> => {
+//   const result = await prisma.user.update({
+//     where: { id: id },
+//     data: {
+//       UserIntolerance: {
+//         upsert: {
+//           create: { intolerances: intolerances },
+//           update: { intolerances: intolerances },
+//         },
+//       },
+//     },
+//   });
+//   return result;
+// };
+
+/*
+ * Update users diets list if exists or create users diets list.
+ */
+// export const updateUserDiets = async (
+//   id: number,
+//   diets: string[],
+// ): Promise<Object> => {
+//   const result = await prisma.user.update({
+//     where: { id: id },
+//     data: {
+//       UserDiet: {
+//         upsert: {
+//           create: { diets: diets },
+//           update: { diets: diets },
+//         },
+//       },
+//     },
+//   });
+//   return result;
+// };
+
+/*
+ * Either updates users cookbook by connecting to an existing recipe or creating recipe record.
+ * */
+// export const updateUserCookbook = async (
+//   id: number,
+//   recipeId: number,
+//   title: string,
+// ): Promise<Object> => {
+//   const result = await prisma.user.update({
+//     where: { id: id },
+//     data: {
+//       cookBook: {
+//         connectOrCreate: {
+//           where: { id: recipeId },
+//           create: { id: recipeId, title: title },
+//         },
+//       },
+//     },
+//   });
+//   return result;
+// };
+
 export const connectOrCreateCookbook = async (
   id: number,
   recipeId: number,
@@ -192,24 +257,6 @@ export const disconnectCookbook = async (id: number, recipeId: number) => {
   });
   return result;
 };
-
-export const getUserDiet = async (id: number)=>{
-  const result = await prisma.user.findUnique({
-    where: {id: id},
-
-  }).
-}
-// export const getUserDiets = async (id: number) => {
-//   const result = await prisma.userDiet.findUnique({
-//     where: {
-//       userId: id,
-//     },
-//     select: {
-//       diets: true,
-//     },
-//   });
-//   return result;
-// };
 // export const updateUserDiets = async (
 //   id: number,
 //   diets: string[],
