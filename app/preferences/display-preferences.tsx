@@ -5,6 +5,7 @@ import Nav from "@/app/Nav";
 import In from "@/app/In";
 import useSWR from "swr";
 import { Intolerance } from ".prisma/client";
+import { Diet } from "@prisma/client";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { ChangeEvent, useState } from "react";
@@ -27,6 +28,7 @@ import { SearchIcon, DeleteIcon } from "@nextui-org/shared-icons";
 export default function DisplayPreferences({
   intolerances,
   userIntolerances,
+  diets,
   userDiets,
   userEmail,
   ingredients,
@@ -36,26 +38,15 @@ export default function DisplayPreferences({
 }: {
   intolerances: Intolerance[];
   userIntolerances: number[] | undefined;
-  userDiets: string[] | undefined;
+  userDiets: number[] | undefined;
   userEmail: string | undefined | null;
   ingredients: Ingredient[],
   userIngredients: number[] | undefined,
-  userID: number 
+  userID: number
+  diets:Diet[] 
 
 }) {
-  const diets = [
-    "Gluten Free",
-    "Ketogenic",
-    "Vegetarian",
-    "Lacto-Vegetarian",
-    "Ovo-Vegetarian",
-    "Vegan",
-    "Pescetarian",
-    "Paleo",
-    "Primal",
-    "Low FODMAP",
-    "Whole30",
-  ];
+  
 
   const notify = () => toast("wow so easy!");
 
@@ -65,9 +56,10 @@ export default function DisplayPreferences({
 
   const [showWarningAlert, setShowWarningAlert] = useState(false);
 
-  const [selectedIngredeients, setSelectedIngredients] = useState<Set<Ingredient>>(
+  let [selectedIngredeients, setSelectedIngredients] = useState<Set<Ingredient>>(
     new Set([]),
   );
+  selectedIngredeients = new Set(ingredients.filter(e=>userIngredients?.includes(e.id)))
 
   const handleChange = async (
     event: ChangeEvent<HTMLInputElement>,
@@ -92,7 +84,7 @@ export default function DisplayPreferences({
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav userEmail = {userEmail}/>
+      {/* <Nav userEmail = {userEmail}/> */}
 
       <div className={"max-w-2xl mx-auto flex flex-col gap-4 my-5"}>
         {showSuccessAlert && (
@@ -165,17 +157,60 @@ export default function DisplayPreferences({
           </div>
         </div>
         <div>
-          <h1 className={"text-xl text-black py-2"}> Diets: {diets.length} </h1>
+          <h1 className={"text-xl text-black py-2"}> Diets: {userDiets?.length} </h1>
           <div className={"grid grid-cols-1 gap-2"}>
             {" "}
             {diets.map((e) => {
               return (
                 <>
-                  <Divider orientation="horizontal"></Divider>
+                  <Divider orientation="horizontal" ></Divider>
+                  <Checkbox
+                  key={e.id}
+                  defaultSelected={userDiets?.includes(e.id)}
+                  onChange={(event) => {
+                    if (showSuccessAlert || showFailureAlert) {
+                      setShowWarningAlert(true);
+                      setTimeout(() => {
+                        setShowWarningAlert(false);
+                      }, 5000);
+                      return;
+                    }
+
+                    if (showWarningAlert) {
+                      return;
+                    }
+
+                    fetch(`/api/diets?id=${e.id}&state=${event.target.checked}`)
+                      .then((res) => {
+                        if (!res.ok) {
+                          return Promise.reject(res);
+                        }
+                        // TODO: Fix?
+                        return res;
+                      })
+                      .then((data) => {
+                        setShowSuccessAlert(true);
+                        setTimeout(() => {
+                          setShowSuccessAlert(false);
+                        }, 5000);
+                      })
+                      .catch((err) => {
+                        setShowFailureAlert(true);
+                        setTimeout(() => {
+                          setShowFailureAlert(false);
+                        }, 5000);
+                      });
+                  }}
+                >
+                  <ToastContainer />
+                  {e.name}
+                </Checkbox>
+                
+                  {/* <Divider orientation="horizontal"></Divider>
                   <Checkbox key={e} defaultSelected={userDiets?.includes(e)}>
                   {" "}
                   {e}{" "}
-                  </Checkbox>
+                  </Checkbox> */}
                 
                 </>
                 

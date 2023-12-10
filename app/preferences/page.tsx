@@ -5,6 +5,7 @@ import { Checkbox } from "@nextui-org/react";
 import DisplayPreferences from "./display-preferences";
 import { getIntolerances, getUserIntolerances } from "@/src/db/queries";
 import { getIngredientList, getAllIngredients } from "@/src/db/queries";
+import { getUserDiets, getAllDiets } from "@/src/db/queries";
 
 import { redirect, useRouter } from "next/navigation";
 
@@ -25,6 +26,7 @@ export default async function Page() {
 
   const intolerances = await getIntolerances();
 
+
   const userIntolerances = await getUserIntolerances(userID);
 
   const userIntolerancesNames = userIntolerances?.map((e) => e.id);
@@ -37,6 +39,10 @@ export default async function Page() {
   const userIngredients = await getIngredientList(userID)
   const userIngredientsIds = userIngredients?.map((e)=>e.id)
 
+  const diets = await getAllDiets()
+  const userDiets = await getUserDiets(userID)
+  const userDietIds = userDiets?.map((e)=>e.id)
+
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
@@ -44,7 +50,8 @@ export default async function Page() {
       <DisplayPreferences
       intolerances={intolerances}
       userIntolerances={userIntolerancesNames}
-      userDiets={[""]}
+      diets={diets}
+      userDiets={userDietIds}
       userEmail={userEmail}
       ingredients={ingredients}
       userIngredients={userIngredientsIds}

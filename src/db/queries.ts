@@ -149,6 +149,82 @@ export const deleteIngredient = async(userId:number, ingredientToDelete:number) 
     }
   })
 }
+export const connectOrCreateCookbook = async (
+  id: number,
+  recipeId: number,
+  title: string,
+  imageType: string,
+) => {
+  const result = await prisma.user.update({
+    where: { id: id },
+    data: {
+      cookBook: {
+        connectOrCreate: {
+          where: { id: recipeId },
+          create: { id: recipeId, title: title, imageType: imageType },
+        },
+      },
+    },
+  });
+  return result;
+};
+
+export const getUserCookbook = async (id: number) => {
+  const result = await prisma.user
+    .findUnique({
+      where: { id: id },
+    })
+    .cookBook()
+    .catch((err) => console.log(err));
+
+  return result;
+};
+
+export const disconnectCookbook = async (id: number, recipeId: number) => {
+  const result = await prisma.user.update({
+    where: { id: id },
+    data: {
+      cookBook: {
+        disconnect: { id: recipeId },
+      },
+    },
+  });
+  return result;
+};
+
+export const getUserDiets =  async (id:number)=>{
+  const result = await prisma.user.findUnique({
+    where: { id: id },
+  }).diets()
+  return result
+}
+export const addDiet = async(userId:number, DietToAdd:number)=>{
+  return await prisma.user.update({
+    where: {id: userId},
+    data: {
+      diets: {
+        connect: {id:DietToAdd}
+      }
+    }
+  })
+}
+
+export const getAllDiets = async () => {
+  const result = await prisma.diet.findMany();
+  return result;
+};
+
+
+export const deleteDiet = async(userId:number, DietToDelete:number) =>{
+  return prisma.user.update({
+    where: {id:userId},
+    data:{
+      diets:{
+        disconnect: {id:DietToDelete}
+      }
+    }
+  })
+}
 
 
 /*
@@ -215,48 +291,7 @@ export const deleteIngredient = async(userId:number, ingredientToDelete:number) 
 //   return result;
 // };
 
-export const connectOrCreateCookbook = async (
-  id: number,
-  recipeId: number,
-  title: string,
-  imageType: string,
-) => {
-  const result = await prisma.user.update({
-    where: { id: id },
-    data: {
-      cookBook: {
-        connectOrCreate: {
-          where: { id: recipeId },
-          create: { id: recipeId, title: title, imageType: imageType },
-        },
-      },
-    },
-  });
-  return result;
-};
 
-export const getUserCookbook = async (id: number) => {
-  const result = await prisma.user
-    .findUnique({
-      where: { id: id },
-    })
-    .cookBook()
-    .catch((err) => console.log(err));
-
-  return result;
-};
-
-export const disconnectCookbook = async (id: number, recipeId: number) => {
-  const result = await prisma.user.update({
-    where: { id: id },
-    data: {
-      cookBook: {
-        disconnect: { id: recipeId },
-      },
-    },
-  });
-  return result;
-};
 // export const updateUserDiets = async (
 //   id: number,
 //   diets: string[],
