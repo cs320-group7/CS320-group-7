@@ -7,6 +7,7 @@ import { Image, Button } from "@nextui-org/react";
 import { UserIcon } from "./UserIcon.jsx";
 import { useRouter } from "next/navigation";
 import { Divider } from "@nextui-org/react";
+import { Card, CardBody,CardFooter,CardHeader, } from "@nextui-org/react";
 
 export default function Landing() {
   return <Frame />;
@@ -19,14 +20,20 @@ export const Frame = () => {
     <div className="frame w-full">
       <div className="macbook-air-wrapper">
         <div className="macbook-air">
+          
           <div className="overlap min-w-full min-h-full">
-            <Image
+            
+              <Image
               className="logo-transparent-png"
               src="landing_page_images/logo-transparent-png.png"
               width={420}
               height={180}
               alt="Default Image"
             />
+            
+           
+            
+            
             <p className="text-wrapper">
               YOUR CULINARY COMPANION FOR EFFORTLESS MEALS!
             </p>
@@ -47,6 +54,7 @@ export const Frame = () => {
               personalized kitchen assistant for future meals.
             </p>
           </div>
+          
           <div className="overlap-group min-w-full" style={{backgroundColor:' #014421'}}>
             <div className="rectangle" />
             <Button className="element"  style={{color:'#013220', backgroundColor: '#66D6A2'}}  onPress={ ()=> router.push("/signup")}>

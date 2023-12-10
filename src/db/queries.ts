@@ -192,6 +192,24 @@ export const disconnectCookbook = async (id: number, recipeId: number) => {
   });
   return result;
 };
+
+export const getUserDiet = async (id: number)=>{
+  const result = await prisma.user.findUnique({
+    where: {id: id},
+
+  }).
+}
+// export const getUserDiets = async (id: number) => {
+//   const result = await prisma.userDiet.findUnique({
+//     where: {
+//       userId: id,
+//     },
+//     select: {
+//       diets: true,
+//     },
+//   });
+//   return result;
+// };
 // export const updateUserDiets = async (
 //   id: number,
 //   diets: string[],
@@ -279,17 +297,7 @@ export const disconnectCookbook = async (id: number, recipeId: number) => {
 /*
  * Returns all users diets.
  */
-// export const getUserDiets = async (id: number) => {
-//   const result = await prisma.userDiet.findUnique({
-//     where: {
-//       userId: id,
-//     },
-//     select: {
-//       diets: true,
-//     },
-//   });
-//   return result;
-// };
+
 
 /*
  * Returns users cookbook (saved recipes).

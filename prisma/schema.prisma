@@ -19,6 +19,7 @@ model User {
   cookBook        Recipe[]
   intolerances    Intolerance[]
   ingredientList  Ingredient[]
+  diets           Diet[]
 }
 
 model Recipe {
@@ -37,5 +38,11 @@ model Intolerance {
 model Ingredient {
   name String
   id   Int   @id @unique @default(autoincrement())
+  user User[]
+}
+
+model Diet{
+  name String
+  id Int @id @unique @default(autoincrement())
   user User[]
 }

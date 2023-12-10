@@ -4,6 +4,7 @@
     flex-direction: row;
     justify-content: center;
     width: 100%;
+    height: 100%
   }
   
   .frame .macbook-air-wrapper {
@@ -12,21 +13,22 @@
   }
   
   .frame .macbook-air {
-    background-color: #ffffff;
-    height: 1000px;
-    /* overflow: hidden;
-    position: relative; */
-  }
+    background-image: linear-gradient(rgba(0, 0, 0, 0.80), rgba(0, 0, 0, 0.80)), url(app/_54ff3dc0-4820-4bb9-b1e8-92065b444aad.jpeg);
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+ 
   
   .frame .overlap {
     background-image: url(/Users/nikhilmukherjee/Group_07_Project_CS320/landing_page_images/healthy-and-vegetarian-food-pattern-in-green-background-vector.jpg);
     background-position: 50% 50%;
     background-size: cover;
-    height: 746px;
+    height: 100%;
     left: 0;
     position: absolute;
     top: 85px;
-    width: 1280px;
+    width: 100%;
   }
   
   .frame .logo-transparent-png {
@@ -39,7 +41,7 @@
   }
   
   .frame .text-wrapper {
-    color: #064f00;
+    color: #66D6A2;
     font-family: "Inika-Bold", Helvetica;
     font-size: 35px;
     font-weight: 700;
@@ -52,7 +54,7 @@
   }
   
   .frame .welcome-to-prep-pal {
-    color: #000000;
+    color: rgb(9, 159, 56);
     font-family: "Inika-Bold", Helvetica;
     font-size: 20px;
     font-weight: 700;
@@ -69,7 +71,7 @@
     left: 0;
     position: absolute;
     top: 0;
-    width: 2040px;
+    width: 100%;
   }
   
   .frame .rectangle {
@@ -78,7 +80,7 @@
     left: 0;
     position: absolute;
     top: 0;
-    width: 2040px;
+    width: 100%;
   }
   
   .frame .icon {
