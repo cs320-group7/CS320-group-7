@@ -14,7 +14,12 @@ export default async function EditProfile() {
 
   const session = await getSession()
 
-  const user = session ? session?.user: undefined
+  //no early return = no conditional thing?
+  if (!session) {
+    redirect('/')
+  }
+
+  const user = session ? session?.user : undefined
 
 
   const [existingName, setExistingName] = useState(user ? user.name as (string|undefined) : "");
@@ -28,11 +33,6 @@ export default async function EditProfile() {
 
   // the above is a little janky, but what is important is we redirect if its invalid anyways.
   // we cannot do it first, because useStates cannot be initialied
-  
-  if (!session) {
-    redirect('/')
-    return
-  }
 
   
 
