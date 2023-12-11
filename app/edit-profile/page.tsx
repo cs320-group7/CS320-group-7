@@ -24,7 +24,7 @@ export default async function EditProfile() {
 
   return (
     <div>
-      <EditProfileClient name={name} email={user.email} />
+      <EditProfileClient name={name} email={user.email} id={String(user.id)} />
     </div>
   )
 }

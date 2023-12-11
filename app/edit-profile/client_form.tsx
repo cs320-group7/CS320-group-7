@@ -3,7 +3,7 @@ import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 
-export default function EditProfileClient(props:{name:string, email:string}) {
+export default function EditProfileClient(props:{name:string, email:string, id:string}) {
     
   const [existingName, setExistingName] = useState(props.name);
   const [newName, setNewName] = useState("");
@@ -14,10 +14,10 @@ export default function EditProfileClient(props:{name:string, email:string}) {
   const [existingEmail, setExistingEmail] = useState(props.email);
   const [newEmail, setNewEmail] = useState("");
 
-  const handlePUT = async (name?:string,email?:string,password?:string) => {
+  const handlePUT = async (id:string,name?:string,email?:string,password?:string,) => {
 
     // Handle form submission logic here
-    const respons = await fetch('/api/auth/register', {
+    const respons = await fetch('/api/user'+id, {
       method: 'PUT',
       body: JSON.stringify({
         name,
@@ -31,7 +31,7 @@ export default function EditProfileClient(props:{name:string, email:string}) {
   const handleNameChange = () => {
     console.log("Changing name to:", newName);
     try{
-      handlePUT(newName)
+      handlePUT(props.id, newName)
       //updateUserName(user.id, newName)
     } catch (e) {
       console.log("error:", e)
@@ -43,7 +43,7 @@ export default function EditProfileClient(props:{name:string, email:string}) {
     try{
       //updateUserPassword(user.id, newPassword)
       // TODO: I feel like password gets hashed here, but let's see
-      handlePUT(undefined, undefined, newPassword)
+      handlePUT(props.id, undefined, undefined, newPassword)
     } catch (e) {
       console.log("error:", e)
     }
@@ -52,7 +52,7 @@ export default function EditProfileClient(props:{name:string, email:string}) {
   const handleEmailChange = () => {
     console.log("Changing email to:", newEmail);
     try{
-      handlePUT(undefined, newEmail, undefined)
+      handlePUT(props.id, undefined, newEmail, undefined)
       //updateUserEmail(user.id, newEmail)
     } catch (e) {
       console.log("error:", e)
@@ -87,7 +87,7 @@ export default function EditProfileClient(props:{name:string, email:string}) {
           required={true}
           value={newEmail}
           onValueChange={setNewEmail}
-          placeholder="Enter new email"
+          placeholder={existingName}
           size="sm"
         />
         <Button onClick={handleEmailChange}>Change Email</Button>
@@ -99,7 +99,7 @@ export default function EditProfileClient(props:{name:string, email:string}) {
           type="password"
           value={newPassword}
           onValueChange={setNewPassword}
-          placeholder="Enter new password"
+          placeholder="****"
           size="sm"
         />
         <Button onClick={handlePasswordChange}>Change Password</Button>
