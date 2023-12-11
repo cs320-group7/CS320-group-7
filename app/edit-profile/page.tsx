@@ -17,7 +17,7 @@ export default async function EditProfile() {
   const user = session?.user
 
 
-  const [existingName, setExistingName] = useState(user?.name ? user.name : "");
+  const [existingName, setExistingName] = useState(user?.name ? user && user.name : "");
   const [newName, setNewName] = useState("");
 
   const [existingPassword, setExistingPassword] = useState("****");
