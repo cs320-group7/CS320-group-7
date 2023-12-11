@@ -26,6 +26,9 @@ export default async function EditProfile() {
   const [existingEmail, setExistingEmail] = useState(user ? user.email : "");
   const [newEmail, setNewEmail] = useState("");
 
+  // the above is a little janky, but what is important is we redirect if its invalid anyways.
+  // we cannot do it first, because useStates cannot be initialied
+  
   if (!session) {
     redirect('/')
     return
