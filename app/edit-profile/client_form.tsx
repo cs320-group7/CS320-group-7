@@ -17,7 +17,8 @@ export default function EditProfileClient(props:{name:string, email:string, id:s
   const handlePUT = async (id:string,name?:string,email?:string,password?:string,) => {
 
     // Handle form submission logic here
-    const respons = await fetch('/api/user'+id, {
+
+    const respons = await fetch('/api/user?id='+id, {
       method: 'PUT',
       body: JSON.stringify({
         name,
@@ -87,7 +88,7 @@ export default function EditProfileClient(props:{name:string, email:string, id:s
           required={true}
           value={newEmail}
           onValueChange={setNewEmail}
-          placeholder={existingName}
+          placeholder={existingEmail}
           size="sm"
         />
         <Button onClick={handleEmailChange}>Change Email</Button>

@@ -24,14 +24,14 @@ export async function GET(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
-  const id = searchParams.get('id');
+  const id = Number(searchParams.get('id'));
   const { name, email, password } = await req.json();
 
   try {
     // Update user name if provided
     if (name) {
       try {
-      await updateUserName(Number(id), name);
+      await updateUserName(id, name);
       }
       catch (e) {
         console.error("not good")
@@ -41,7 +41,7 @@ export async function PUT(req: NextRequest) {
     // Update user email if provided
     if (email) {
       try{
-      await updateUserEmail(Number(id), email);
+      await updateUserEmail(id, email);
       }
       catch (e) {
         console.error("not good")
