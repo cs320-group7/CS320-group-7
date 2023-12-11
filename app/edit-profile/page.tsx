@@ -14,21 +14,24 @@ export default async function EditProfile() {
 
   const session = await getSession()
 
-  const user = session!.user as User
+  const user = session?.user
 
-  const [existingName, setExistingName] = useState(user.name ? user.name : "");
+
+  const [existingName, setExistingName] = useState(user?.name ? user.name : "");
   const [newName, setNewName] = useState("");
 
   const [existingPassword, setExistingPassword] = useState("****");
   const [newPassword, setNewPassword] = useState("");
 
-  const [existingEmail, setExistingEmail] = useState(user.email ? user.name : "");
+  const [existingEmail, setExistingEmail] = useState(user?.email ? user : "");
   const [newEmail, setNewEmail] = useState("");
 
   if (!session) {
     redirect('/')
     return
   }
+
+  
 
   const handlePUT = async (name?:string,email?:string,password?:string) => {
 

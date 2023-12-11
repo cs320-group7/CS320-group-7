@@ -30,4 +30,3 @@ export default async function LoggedIn() {
 
   );
 }
-//<In ingredients={ingredients} />
