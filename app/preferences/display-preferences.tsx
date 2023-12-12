@@ -92,7 +92,6 @@ export default function DisplayPreferences({
 
   return (
     <div className={"container min-h-screen min-w-full bg-gray-200"}>
-      <Nav userEmail = {userEmail}/>
 
       <div className={"max-w-2xl mx-auto flex flex-col gap-4 my-5"}>
         {showSuccessAlert && (
